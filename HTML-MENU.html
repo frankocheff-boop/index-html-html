@@ -1,0 +1,354 @@
+# ideal-doodle<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Interactive Menu — Visual</title>
+  <script src="https://cdn.tailwindcss.com/3.4.1?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'fondo': '#FAFAFB',
+            'negro-azabache': '#0a0a0a',
+            'rojo-carmin': '#D70040',
+            'turquesa': '#40E0D0',
+            'accent-600': '#1f7a8c',
+            'muted': '#6b7280'
+          },
+          fontFamily: { 'sans': ['Inter','sans-serif'], 'serif': ['Playfair Display','serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;700&display=swap');
+
+    body { @apply font-sans bg-fondo text-negro-azabache antialiased; }
+    h1,h2,h3,h4 { @apply font-serif; }
+
+    .dish-thumb { @apply w-28 h-20 rounded-md object-cover flex-shrink-0; }
+
+    .btn-filled { @apply bg-accent-600 text-white font-semibold py-2 px-4 rounded-md shadow hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-accent-600; }
+    .btn-outline { @apply border border-accent-600 text-accent-600 bg-white py-2 px-4 rounded-md hover:bg-accent-50 focus:outline-none focus:ring-2 focus:ring-accent-600; }
+
+    @media print {
+      .no-print { display: none; }
+      .menu-section { page-break-inside: avoid; box-shadow: none !important; border: none !important; }
+      #seccion-cena { display: block !important; }
+      body { background: #fff !important; color: #000 !important; }
+      .bg-negro-azabache { background-color: #fff !important; color: #000 !important; border: 1px solid #ccc; }
+    }
+
+    .form-checkbox, .form-radio { @apply text-rojo-carmin focus:ring-turquesa rounded; }
+  </style>
+</head>
+<body class="bg-fondo text-negro-azabache">
+
+  <!-- WhatsApp floating -->
+  <a href="https://wa.me/523221606843" target="_blank" class="no-print fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition z-50" aria-label="Contactar por WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 4.315 1.847 6.03l-.341 1.246 1.274-.328zM9.062 7.031c.157-.157.349-.157.532.004.148.147.231.346.23.567.001.217-.083.415-.231.566l-.111.11h.001c.148.433.364.849.651 1.226.311.41.68.77.1.11.179.22.383.417.61.574s.449.272.69.347c.07.021.141.04.212.057.175.043.35.057.524.043.218-.014.43-.099.606-.231.22-.175.406-.39.563-.631l.004-.004.148-.231c.148-.148.364-.231.566-.231.217 0 .415.083.566.231l1.181 1.181c.149.148.231.346.231.566s-.083.415-.231.566c-.661.661-1.455 1.157-2.404 1.341-1.11.22-2.206.043-3.231-.482-1.639-.838-3.033-2.046-4.116-3.597-.937-1.34-1.576-2.883-1.804-4.505-.157-.995.014-1.961.483-2.845.19-.346.43-.661.706-.937.22-.22.483-.406.781-.532.217-.083.43-.125.642-.125s.415.042.606.125c.217.083.403.208.566.364l.231.231.004.004z" /></svg>
+  </a>
+
+  <main class="max-w-5xl mx-auto p-6 md:p-12">
+    <form action="https://formspree.io/f/xvgqddpg" method="POST" class="space-y-12" novalidate>
+
+      <header class="text-center mb-8">
+        <h1 class="text-5xl md:text-6xl font-serif text-negro-azabache mb-2">Our Menu</h1>
+        <p class="text-lg text-muted mb-4">Select your meals for the day.</p>
+
+        <div class="mt-3 inline-flex items-center gap-3 text-sm font-semibold text-rojo-carmin border border-rojo-carmin p-2 rounded-md" role="note">
+          <span class="sr-only">Spice legend</span>
+          <span>🌶️ Mild</span> <span class="text-muted">|</span>
+          <span>🌶️🌶️ Spicy</span> <span class="text-muted">|</span>
+          <span>🌶️🌶️🌶️ Very Spicy</span>
+        </div>
+      </header>
+
+      <!-- Guest -->
+      <section class="no-print p-6 bg-white rounded-xl shadow-sm" aria-labelledby="guest-info-heading">
+        <h2 id="guest-info-heading" class="text-2xl text-rojo-carmin mb-4">Guest Information</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="nombre" class="block text-sm font-semibold mb-1">Name</label>
+            <input id="nombre" name="guest_name" required placeholder="Full name" class="w-full rounded-md border border-gray-200 px-3 py-2 focus:ring-2 focus:ring-turquesa" />
+          </div>
+          <div>
+            <label for="habitacion" class="block text-sm font-semibold mb-1">Room</label>
+            <input id="habitacion" name="guest_room" required placeholder="Room number" class="w-full rounded-md border border-gray-200 px-3 py-2 focus:ring-2 focus:ring-turquesa" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Breakfast with images -->
+      <section id="seccion-desayuno" class="menu-section bg-white p-6 rounded-xl shadow-sm" aria-labelledby="breakfast-heading">
+        <div class="md:flex md:items-start md:gap-6">
+          <div class="md:flex-1">
+            <h2 id="breakfast-heading" class="text-3xl text-rojo-carmin mb-2">Breakfast Buffet</h2>
+            <p class="text-sm text-muted mb-3">Hours: <strong class="text-turquesa">8:00 AM - 11:00 AM</strong></p>
+
+            <h3 class="text-lg font-semibold mt-4 mb-2">Always Included</h3>
+            <ul class="space-y-2 text-sm text-muted">
+              <li>Coffee & Juice (from 7:00 AM)</li>
+              <li>Fresh Fruit Station</li>
+              <li>Yogurt & Granola</li>
+              <li>Homemade Bread & Jams</li>
+              <li>Refried Beans</li>
+              <li>Hash Browns</li>
+            </ul>
+          </div>
+
+          <div class="md:w-64 mt-4 md:mt-0">
+            <img class="w-full h-40 object-cover rounded-md shadow-sm" src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=1b7f3c3a3c6d3ae0b7a2fd9f5b9d3e5a" alt="Breakfast plate with waffles, berries and coffee" loading="lazy" />
+            <p class="text-xs text-muted mt-2">Foto referencial — reemplaza por la tuya</p>
+          </div>
+        </div>
+
+        <div class="mt-6 md:flex md:gap-6">
+          <div class="md:flex-1">
+            <h3 class="text-lg font-semibold mb-2">Eggs of the Day</h3>
+            <ul class="text-sm text-muted bg-gray-50 p-3 rounded-md space-y-1">
+              <li><strong>Monday:</strong> Huevos Rancheros 🌶️</li>
+              <li><strong>Tuesday:</strong> Eggs with Migas</li>
+              <li><strong>Wednesday:</strong> Divorced Eggs 🌶️🌶️</li>
+              <li><strong>Thursday:</strong> Eggs with Chorizo</li>
+              <li><strong>Friday:</strong> Motuleños Eggs</li>
+              <li><strong>Saturday:</strong> Drowned Eggs 🌶️</li>
+              <li><strong>Sunday:</strong> Omelette (to order)</li>
+            </ul>
+          </div>
+
+          <div class="md:w-80 mt-4 md:mt-0">
+            <h3 class="text-lg font-semibold mb-2">Cravings (Choose 1)</h3>
+            <fieldset class="space-y-3" role="radiogroup" aria-labelledby="cravings-legend">
+              <legend id="cravings-legend" class="sr-only">Breakfast cravings</legend>
+
+              <label class="flex items-center gap-3 p-2 border rounded-md cursor-pointer">
+                <input id="crave-red" type="radio" name="breakfast_craving" value="Red Chilaquiles" class="form-radio" />
+                <img class="dish-thumb" src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=2c4a3df3f4b8f474f44a2e2b6f8b7d1a" alt="Red chilaquiles with salsa and cheese" loading="lazy" />
+                <span>Red Chilaquiles 🌶️</span>
+              </label>
+
+              <label class="flex items-center gap-3 p-2 border rounded-md cursor-pointer">
+                <input id="crave-green" type="radio" name="breakfast_craving" value="Green Chilaquiles" class="form-radio" />
+                <img class="dish-thumb" src="https://images.unsplash.com/photo-1578926372044-ccf0d9b7b3e8?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=9c3e9d0b2b1de3d3a4b1f8a6b2c3d4e5" alt="Green chilaquiles with crema" loading="lazy" />
+                <span>Green Chilaquiles 🌶️🌶️</span>
+              </label>
+
+              <label class="flex items-center gap-3 p-2 border rounded-md cursor-pointer">
+                <input id="crave-waffles" type="radio" name="breakfast_craving" value="Waffles with Berries" class="form-radio" />
+                <img class="dish-thumb" src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=4fb0a6c9e8b5a2d3d9e1f4a6b7c8d9e0" alt="Waffles with fresh berries and syrup" loading="lazy" />
+                <span>Waffles with Berries</span>
+              </label>
+            </fieldset>
+          </div>
+        </div>
+      </section>
+
+      <!-- Lunch with images -->
+      <section id="seccion-almuerzo" class="menu-section bg-white p-6 rounded-xl shadow-sm" aria-labelledby="lunch-heading">
+        <div class="md:flex md:justify-between md:items-start md:gap-6">
+          <div class="md:flex-1">
+            <h2 id="lunch-heading" class="text-3xl text-rojo-carmin mb-2">Lunch Selection</h2>
+            <p class="text-sm text-muted mb-3">Hours: <strong class="text-turquesa">1:30 PM - 3:30 PM</strong></p>
+            <p class="text-sm text-muted mb-4">All main courses are served with a choice of two carbohydrates.</p>
+
+            <h3 class="text-lg font-semibold mb-2">Chef's Suggestion</h3>
+            <ul class="text-sm text-muted bg-gray-50 p-3 rounded-md space-y-1">
+              <li><strong>Monday:</strong> Grilled Zarandeado Fish 🌶️</li>
+              <li><strong>Tuesday:</strong> Cochinita Pibil</li>
+              <li><strong>Wednesday:</strong> Chiles Rellenos</li>
+            </ul>
+
+            <label class="inline-flex items-center gap-2 mt-4 cursor-pointer">
+              <input id="lunch_suggestion" type="checkbox" name="lunch_suggestion" value="Add Suggestion of the Day" class="form-checkbox" />
+              <span class="text-sm font-semibold">Add the Suggestion of the Day</span>
+            </label>
+          </div>
+
+          <div class="md:w-64 mt-4 md:mt-0">
+            <img class="w-full h-36 object-cover rounded-md shadow-sm" src="https://images.unsplash.com/photo-1543352634-1b3c6f7f8df1?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=3f2a1b4c5d6e7f8a9b0c1d2e3f4a5b6c" alt="Lunch special plate with fish and sides" loading="lazy" />
+            <p class="text-xs text-muted mt-2">Foto referencial</p>
+          </div>
+        </div>
+
+        <div class="mt-6 grid md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-lg font-semibold mb-2">Our Classics</h3>
+            <fieldset class="space-y-2" aria-labelledby="lunch-classics-legend">
+              <legend id="lunch-classics-legend" class="sr-only">Lunch classics</legend>
+
+              <label class="flex items-center gap-3 p-2 border rounded-md cursor-pointer">
+                <input id="classic-caesar" type="checkbox" name="lunch_classics[]" value="Chicken Caesar Salad" class="form-checkbox" />
+                <img class="dish-thumb" src="https://images.unsplash.com/photo-1551218808-94e220e084d2?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e" alt="Chicken caesar salad" loading="lazy" />
+                <span>Chicken Caesar Salad</span>
+              </label>
+
+              <label class="flex items-center gap-3 p-2 border rounded-md cursor-pointer">
+                <input id="classic-flautas" type="checkbox" name="lunch_classics[]" value="Chicken Flautas" class="form-checkbox" />
+                <img class="dish-thumb" src="https://images.unsplash.com/photo-1604908177522-3d4b6f8f2d9e?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d" alt="Chicken flautas with crema and lettuce" loading="lazy" />
+                <span>Chicken Flautas</span>
+              </label>
+            </fieldset>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold mb-2">Carbohydrates (Choose 2)</h3>
+            <p class="text-sm text-muted mb-2">Select exactly two options.</p>
+            <fieldset id="carbs-fieldset" class="flex flex-wrap gap-3" aria-describedby="carbs-desc">
+              <legend class="sr-only">Choose two carbohydrates</legend>
+              <p id="carbs-desc" class="sr-only">Seleccione exactamente dos carbohidratos</p>
+
+              <label class="flex items-center gap-2 p-2 border rounded-md cursor-pointer">
+                <input id="side_rice" type="checkbox" name="lunch_carbs[]" value="Rice" class="form-checkbox" />
+                <span>Rice</span>
+              </label>
+
+              <label class="flex items-center gap-2 p-2 border rounded-md cursor-pointer">
+                <input id="side_beans" type="checkbox" name="lunch_carbs[]" value="Refried Beans" class="form-checkbox" />
+                <span>Refried Beans</span>
+              </label>
+
+              <label class="flex items-center gap-2 p-2 border rounded-md cursor-pointer">
+                <input id="side_potatoes" type="checkbox" name="lunch_carbs[]" value="Baby Potatoes" class="form-checkbox" />
+                <span>Baby Potatoes</span>
+              </label>
+
+              <label class="flex items-center gap-2 p-2 border rounded-md cursor-pointer">
+                <input id="side_tortillas" type="checkbox" name="lunch_carbs[]" value="Corn Tortillas" class="form-checkbox" />
+                <span>Corn Tortillas</span>
+              </label>
+            </fieldset>
+
+            <div id="carbs-error" class="mt-2 text-sm text-rojo-carmin font-semibold sr-only" role="alert" aria-live="assertive"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dinner preview (hidden) -->
+      <section id="seccion-cena" class="menu-section bg-white p-6 rounded-xl shadow-sm hidden" aria-labelledby="dinner-heading">
+        <div class="md:flex md:gap-6">
+          <div class="md:flex-1">
+            <h2 id="dinner-heading" class="text-3xl text-rojo-carmin mb-2">Gourmet Dinner</h2>
+            <p class="text-sm text-muted mb-3">Reservation Hours: <strong class="text-turquesa">7:00 PM - 11:00 PM</strong></p>
+
+            <h3 class="text-lg font-semibold mb-2">Appetizers</h3>
+            <ul class="text-sm text-muted space-y-1">
+              <li>Tortilla Soup 🌶️</li>
+              <li>Beetroot and Goat Cheese Salad</li>
+              <li>Garlic Octopus Tacos 🌶️</li>
+            </ul>
+          </div>
+
+          <div class="md:w-64 mt-4 md:mt-0">
+            <img class="w-full h-36 object-cover rounded-md shadow-sm" src="https://images.unsplash.com/photo-1543779502-5f3b1f4e3b8e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e" alt="Gourmet dinner plate with seafood and greens" loading="lazy" />
+            <p class="text-xs text-muted mt-2">Foto referencial</p>
+          </div>
+        </div>
+
+        <div class="mt-6 bg-negro-azabache text-white p-4 rounded-md">
+          <h3 class="text-lg text-turquesa mb-2">Main Course of the Day</h3>
+          <ul class="text-sm space-y-1">
+            <li><strong>Monday:</strong> Filet Mignon in Red Wine Sauce.</li>
+            <li><strong>Tuesday:</strong> Pistachio-Crusted Salmon.</li>
+            <li><strong>Sunday:</strong> Giant Tequila Shrimp 🌶️.</li>
+          </ul>
+
+          <label class="mt-4 inline-flex items-center gap-2 cursor-pointer">
+            <input id="dinner_main_course_day" type="checkbox" name="dinner_main_course_day" value="Yes, add Main Course of the Day" class="form-checkbox" />
+            <span class="text-sm font-semibold">Add the Main Course of the Day</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Allergies -->
+      <section class="no-print menu-section bg-white p-6 rounded-xl shadow-sm">
+        <h2 class="text-2xl text-rojo-carmin mb-2">Allergies and Special Instructions</h2>
+        <label for="alergias" class="block text-sm mb-2 text-muted">Please, list any food allergies or special requests here.</label>
+        <textarea id="alergias" name="alergias_instrucciones" rows="4" class="w-full rounded-md border border-gray-200 px-3 py-2 focus:ring-2 focus:ring-turquesa"></textarea>
+      </section>
+
+      <!-- Controls -->
+      <section class="no-print flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="w-full md:w-auto">
+          <button type="button" id="btn-ver-cena" aria-expanded="false" aria-controls="seccion-cena" class="btn-outline w-full md:w-auto">
+            View Epicurean Dinner Options
+          </button>
+        </div>
+
+        <div class="w-full md:w-auto flex gap-3">
+          <button type="button" class="btn-outline" id="btn-preview">Preview (print-friendly)</button>
+          <button type="submit" class="btn-filled">Send Selection</button>
+        </div>
+      </section>
+    </form>
+  </main>
+
+  <script>
+    (function () {
+      // Toggle dinner section
+      const btn = document.getElementById('btn-ver-cena');
+      const dinner = document.getElementById('seccion-cena');
+      if (btn && dinner) {
+        btn.addEventListener('click', () => {
+          const wasHidden = dinner.classList.contains('hidden');
+          dinner.classList.toggle('hidden');
+          btn.setAttribute('aria-expanded', String(wasHidden));
+          btn.textContent = wasHidden ? 'Hide Dinner Options' : 'View Epicurean Dinner Options';
+          if (wasHidden) dinner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+
+      // Preview button opens print (makes dinner visible)
+      const btnPreview = document.getElementById('btn-preview');
+      if (btnPreview) {
+        btnPreview.addEventListener('click', () => {
+          if (dinner) dinner.classList.remove('hidden');
+          window.print();
+        });
+      }
+
+      // Carbs validation exactly 2
+      const carbsFieldset = document.getElementById('carbs-fieldset');
+      const carbsError = document.getElementById('carbs-error');
+      const carbCheckboxes = carbsFieldset ? carbsFieldset.querySelectorAll('input[type="checkbox"]') : [];
+
+      function setCarbsError(show) {
+        if (!carbsError || !carbsFieldset) return;
+        if (show) {
+          carbsError.classList.remove('sr-only');
+          carbsError.textContent = 'Please select exactly two carbohydrates.';
+          carbsFieldset.classList.add('ring-2','ring-rojo-carmin','rounded-md','p-2');
+        } else {
+          carbsError.classList.add('sr-only');
+          carbsError.textContent = '';
+          carbsFieldset.classList.remove('ring-2','ring-rojo-carmin','rounded-md','p-2');
+        }
+      }
+
+      if (carbCheckboxes.length) {
+        carbCheckboxes.forEach(cb => cb.addEventListener('change', function () {
+          const checked = Array.from(carbCheckboxes).filter(c => c.checked).length;
+          setCarbsError(checked !== 2);
+        }));
+
+        const form = document.querySelector('form[action][method]');
+        form.addEventListener('submit', function (e) {
+          const checked = Array.from(carbCheckboxes).filter(c => c.checked).length;
+          if (checked !== 2) {
+            e.preventDefault();
+            setCarbsError(true);
+            carbsError.setAttribute('tabindex','-1');
+            carbsError.focus();
+          } else {
+            setCarbsError(false);
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
+
