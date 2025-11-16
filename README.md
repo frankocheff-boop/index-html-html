@@ -1,4 +1,27 @@
-    
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Sitio Web</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Website</h1>
+    </header>
+    <main>
+        <section>
+            <h2>About Us</h2>
+            <p>This is a paragraph about our website.</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 My Website</p>
+    </footer>
+</body>
+</html>
+ 
 <!DOCTYPE html>
 <html lang="es">
 
