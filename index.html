@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verano Estate - Chef Franko</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500;600;700&display=swap');
+
+        :root {
+            --brand-teal: #003C3C;
+            --brand-bg: #FBF7F0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--brand-bg);
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--brand-teal);
+        }
+
+        .card {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 60, 60, 0.15);
+        }
+
+        .btn {
+            transition: all 0.2s ease-in-out;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .btn-primary {
+            background-color: var(--brand-teal);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #002a2a;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header -->
+    <header class="text-center py-12 px-4">
+        <p class="text-2xl sm:text-3xl tracking-widest text-[var(--brand-teal)] font-semibold">VERANO ESTATE</p>
+        <h1 class="text-4xl sm:text-5xl mt-4">Bienvenido</h1>
+        <p class="text-lg text-gray-600 mt-3">by Chef Franko</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-6 pb-16">
+        <div class="text-center mb-12">
+            <p class="text-gray-700 text-lg max-w-2xl mx-auto">
+                Descubre nuestros servicios de hospedaje de lujo y experiencias culinarias excepcionales en Puerto Vallarta.
+            </p>
+        </div>
+
+        <!-- Navigation Cards -->
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <!-- Guest Form Card -->
+            <div class="card rounded-lg p-8 shadow-md">
+                <div class="text-center mb-6">
+                    <svg class="w-16 h-16 mx-auto text-[var(--brand-teal)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold mb-4 text-center">Formulario de Huéspedes</h2>
+                <p class="text-gray-600 mb-6 text-center">
+                    Complete su información de reserva, preferencias y requisitos especiales para su estadía.
+                </p>
+                <a href="README.md" class="btn btn-primary w-full py-3 px-6 rounded-lg font-semibold flex items-center justify-center">
+                    <span>Acceder al Formulario</span>
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Menu Card -->
+            <div class="card rounded-lg p-8 shadow-md">
+                <div class="text-center mb-6">
+                    <svg class="w-16 h-16 mx-auto text-[var(--brand-teal)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold mb-4 text-center">Menú Interactivo</h2>
+                <p class="text-gray-600 mb-6 text-center">
+                    Explore nuestras opciones de menú y planificación culinaria para eventos especiales.
+                </p>
+                <a href="HTML-MENU.html" class="btn btn-primary w-full py-3 px-6 rounded-lg font-semibold flex items-center justify-center">
+                    <span>Ver Menú</span>
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Dashboard Card -->
+            <div class="card rounded-lg p-8 shadow-md">
+                <div class="text-center mb-6">
+                    <svg class="w-16 h-16 mx-auto text-[var(--brand-teal)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold mb-4 text-center">Panel de Control</h2>
+                <p class="text-gray-600 mb-6 text-center">
+                    Acceda al panel de control culinario y gestión de eventos especiales.
+                </p>
+                <a href="untitled-1.html" class="btn btn-primary w-full py-3 px-6 rounded-lg font-semibold flex items-center justify-center">
+                    <span>Ver Panel</span>
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Contact Card -->
+            <div class="card rounded-lg p-8 shadow-md">
+                <div class="text-center mb-6">
+                    <svg class="w-16 h-16 mx-auto text-[var(--brand-teal)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold mb-4 text-center">Contacto</h2>
+                <p class="text-gray-600 mb-6 text-center">
+                    ¿Tiene preguntas? Póngase en contacto con nuestro equipo.
+                </p>
+                <div class="space-y-3 text-center">
+                    <p class="text-gray-700"><strong>Teléfono:</strong> +52 322 160 6843</p>
+                    <p class="text-gray-700"><strong>Email:</strong> franko@veranostate.com</p>
+                    <a href="https://www.instagram.com/veranostate/" target="_blank" rel="noopener noreferrer" class="btn btn-primary inline-flex items-center justify-center py-2 px-6 rounded-lg font-semibold mt-4">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919C8.416 2.175 8.796 2.163 12 2.163zm0 1.44c-3.115 0-3.486.011-4.71.066-2.783.127-3.995 1.33-4.122 4.122-.056 1.223-.066 1.594-.066 4.709 0 3.115.011 3.486.066 4.71.127 2.783 1.339 3.995 4.122 4.122 1.223.056 1.594.066 4.709.066 3.115 0 3.486-.011 4.71-.066 2.783-.127 3.995-1.33 4.122-4.122.056-1.223.066-1.594.066-4.709 0-3.115-.011-3.486-.066-4.71-.127-2.783-1.339-3.995-4.122-4.122-1.224-.055-1.595-.066-4.71-.066zm0 2.88c-1.802 0-3.262 1.46-3.262 3.262s1.46 3.262 3.262 3.262 3.262-1.46 3.262-3.262-1.46-3.262-3.262-3.262zm0 5.08c-.997 0-1.812-.815-1.812-1.812s.815-1.812 1.812-1.812 1.812.815 1.812 1.812-.815 1.812-1.812 1.812zm4.332-5.182c-.378 0-.683.305-.683.683s.305.683.683.683.683-.305.683-.683-.305-.683-.683-.683z"/>
+                        </svg>
+                        <span>@veranostate</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[var(--brand-teal)] text-white py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <p class="font-bold text-lg tracking-wide">VERANO ESTATE by chef franko</p>
+            <div class="mt-6 border-t border-gray-700 pt-6">
+                <p class="text-sm text-gray-300">&copy; 2025 VERANO ESTATE. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
