@@ -4,315 +4,473 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Chosen Palette: Modern Tropical (#FFFFFF, #F9FAFB, #111827, #06B6D4, #FBBF24) -->
-    <!-- Application Structure Plan: A tab-based SPA to present the final wedding itinerary. The structure is designed for clarity and ease of use, separating high-level information from granular details. 1) 'Resumen' Tab: A dashboard view with key stats, a weekend timeline, and a meal type chart for a quick overview. 2) 'Itinerario Detallado' Tab: An interactive accordion for the day-by-day plan, preventing information overload. 3) 'Plan de Alergias' Tab: A dedicated, easy-to-scan section showcasing personalized care. This architecture allows stakeholders to access the information they need efficiently. -->
-    <!-- Visualization & Content Choices: 1. Key Metrics -> Goal: Inform -> Big Number KPI Cards (HTML/CSS) -> Justification: Provides instant, high-impact data. 2. Weekend Timeline -> Goal: Organize -> Timeline Diagram (HTML/CSS) -> Justification: Intuitively visualizes the event's flow. NO SVG/Mermaid. 3. Meal Distribution -> Goal: Compare -> Donut Chart (Chart.js) -> Justification: Shows operational scope at a glance. 4. Daily Menus -> Goal: Organize -> Accordion (HTML/CSS/JS) -> Interaction: Click to expand/collapse -> Justification: Manages complex information cleanly. 5. Allergy Details -> Goal: Organize/Inform -> Grid of Cards (HTML/CSS) -> Justification: Clear format for critical safety info. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-    <title>Panel de Control Culinario - Boda Chazin-Hooper</title>
+    <title>Guest Information Form - Verano Estate</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;700&display=swap"
-        rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+
+        :root {
+            --brand-teal: #003C3C;
+            --brand-bg: #FBF7F0;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f9fafb;
-            color: #111827;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--brand-bg);
+            color: #333;
         }
 
-        h1,
-        h2,
-        h3,
-        .brand-font {
+        h1, h2, h3 {
             font-family: 'Playfair Display', serif;
-            color: #111827;
+            color: var(--brand-teal);
         }
 
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 350px;
-            margin: auto;
-            height: 350px;
+        .form-section {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
         }
 
-        .card {
-            background-color: #FFFFFF;
-            border-radius: 0.5rem;
-            padding: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+        .input-field {
+            font-family: 'Montserrat', sans-serif;
+            border: 1px solid #D1D5DB;
+            transition: all 0.2s ease-in-out;
         }
 
-        .tab-btn {
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
+        .input-field:focus {
+            border-color: var(--brand-teal);
+            box-shadow: 0 0 0 2px rgba(0, 60, 60, 0.2);
+        }
+
+        .btn-primary {
+            background-color: var(--brand-teal);
+            color: white;
+        }
+        .btn-primary:hover { background-color: #002a2a; }
+        
+        .btn-secondary {
+            background-color: #4c7c7c;
+            color: white;
+        }
+
+        .btn-tertiary {
+            background-color: #e5e7eb;
+            color: #333;
+        }
+        .btn-tertiary:hover { background-color: #d1d5db; }
+
+        .lang-btn {
+            background: white;
+            border: 1px solid #003C3C;
+            color: #003C3C;
+            padding: 5px 10px;
+            margin-left: 5px;
+            border-radius: 5px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-            color: #6b7280;
+            font-weight: bold;
+        }
+        .lang-btn:hover { background: #f0f0f0; }
+        .lang-btn.active {
+            background: #003C3C;
+            color: white;
         }
 
-        .tab-btn.active {
-            color: #06B6D4;
-            border-bottom-color: #06B6D4;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .accordion-header {
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .accordion-header:hover {
-            background-color: #f3f4f6;
-        }
-
-        .accordion-content {
-            max-height: 0;
+        /* Estilos de respaldo cuando Tailwind no carga */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
             overflow: hidden;
-            transition: max-height 0.5s ease-out;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        footer {
+            background-color: var(--brand-teal);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        footer a {
+            display: inline-block;
+            margin: 0 0.5rem;
+        }
+
+        footer svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.25rem 0;
         }
     </style>
 </head>
 
-<body>
-    <div class="max-w-7xl mx-auto p-4 sm:p-8">
+<body class="antialiased">
 
-        <header class="text-center my-12">
-            <h1 class="text-4xl md:text-5xl font-bold">Panel de Control Culinario</h1>
-            <p class="mt-4 text-xl text-gray-500 brand-font">Boda Chazin-Hooper | VERANO STATE by Chef Franko</p>
-        </header>
-
-        <div class="card">
-            <!-- Tabs Navigation -->
-            <nav class="flex flex-wrap justify-center border-b border-gray-200 mb-8">
-                <button class="tab-btn active" data-tab="resumen">Resumen General</button>
-                <button class="tab-btn" data-tab="itinerario">Itinerario Detallado</button>
-                <button class="tab-btn" data-tab="alergias">Plan de Alergias</button>
-            </nav>
-
-            <!-- Tab Content -->
-            <div id="resumen" class="tab-content active">
-                <h2 class="text-3xl font-bold text-center mb-8">Resumen del Evento</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-12">
-                    <div class="bg-gray-100 p-6 rounded-lg">
-                        <p class="text-5xl font-bold text-cyan-600">50+</p>
-                        <p class="font-semibold mt-2">Invitados</p>
-                    </div>
-                    <div class="bg-gray-100 p-6 rounded-lg">
-                        <p class="text-5xl font-bold text-cyan-600">4</p>
-                        <p class="font-semibold mt-2">Días de Celebración</p>
-                    </div>
-                    <div class="bg-gray-100 p-6 rounded-lg">
-                        <p class="text-5xl font-bold text-cyan-600">14</p>
-                        <p class="font-semibold mt-2">Servicios Culinarios</p>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    <div>
-                        <h3 class="text-2xl font-bold mb-4">Línea de Tiempo del Fin de Semana</h3>
-                        <div class="space-y-4">
-                            <p><strong>Jueves:</strong> Llegada del grupo inicial y bienvenida de todos los invitados.
-                            </p>
-                            <p><strong>Viernes:</strong> El gran día de la boda, desde el desayuno hasta la cena de
-                                celebración.</p>
-                            <p><strong>Sábado:</strong> Día de relajación post-boda con actividades y cena de tacos en
-                                la alberca.</p>
-                            <p><strong>Domingo:</strong> Desayuno de despedida.</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="chart-container">
-                            <canvas id="mealsChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="itinerario" class="tab-content">
-                <h2 class="text-3xl font-bold text-center mb-8">Itinerario Detallado</h2>
-                <div class="space-y-4">
-                    <!-- Day 1 -->
-                    <div class="border rounded-lg bg-gray-50">
-                        <div class="accordion-header p-4 flex justify-between items-center">
-                            <h3 class="text-xl font-bold">Jueves, 23 de Octubre: Día de Bienvenida</h3>
-                            <span class="text-2xl transform transition-transform duration-300 text-cyan-500">+</span>
-                        </div>
-                        <div class="accordion-content">
-                            <div class="p-4 border-t grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="bg-white p-4 rounded-md shadow-sm"><strong>Desayuno (9:00 AM, 6p):</strong>
-                                    Burritos de Desayuno con tocino y fruta fresca (sin kiwi).</div>
-                                <div class="bg-white p-4 rounded-md shadow-sm"><strong>Almuerzo (1:00 PM, 6p):</strong>
-                                    Brochetas de Res y Camarón con Ensalada "Tres Soles".</div>
-                                <div class="bg-white p-4 rounded-md shadow-sm"><strong>Llegada de Invitados (3:00
-                                        PM):</strong> Margaritas (opción virgen), Ceviche Vallarta, guacamole y totopos.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Day 2 -->
-                    <div class="border rounded-lg bg-gray-50">
-                        <div class="accordion-header p-4 flex justify-between items-center">
-                            <h3 class="text-xl font-bold">Viernes, 24 de Octubre: El Gran Día</h3>
-                            <span class="text-2xl transform transition-transform duration-300 text-cyan-500">+</span>
-                        </div>
-                        <div class="accordion-content">
-                            <div class="p-4 border-t grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                <div class="bg-white p-4 rounded-md shadow-sm"><strong>Desayuno Matutino:</strong>
-                                    Avocado Toast, Parfaits de Yogur, Smoothie Bowls, Mini Frittatas.</div>
-                                <div class="bg-white p-4 rounded-md shadow-sm"><strong>Desayuno Privado
-                                        (Pareja):</strong> Huevos Benedictinos, fruta especial, yogur, café y jugo.
-                                </div>
-                                <div class="bg-white p-4 rounded-md shadow-sm"><strong>Almuerzo Ligero:</strong>
-                                    Sándwiches de pollo y vegetarianos, ensalada y fruta.</div>
-                                <div class="bg-white p-4 rounded-md shadow-sm"><strong>Ceremonia:</strong> Cantaritos y
-                                    agua embotellada.</div>
-                                <div class="bg-white p-4 rounded-md shadow-sm lg:col-span-2"><strong>Hora del
-                                        Cóctel:</strong> (Pasados) Sushi, Brochetas Caprese, Esquites, Guacamole, Mini
-                                    hamburguesas.</div>
-                                <div class="bg-white p-4 rounded-md shadow-sm md:col-span-2 lg:col-span-3"><strong>Cena
-                                        de Boda (Buffet):</strong> Tamales vegetarianos, Cochinita Pibil, Enchiladas y
-                                    todos sus acompañamientos.</div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Day 3 -->
-                    <div class="border rounded-lg bg-gray-50">
-                        <div class="accordion-header p-4 flex justify-between items-center">
-                            <h3 class="text-xl font-bold">Sábado, 25 de Octubre: Celebración Post-Boda</h3>
-                            <span class="text-2xl transform transition-transform duration-300 text-cyan-500">+</span>
-                        </div>
-                        <div class="accordion-content">
-                            <div class="p-4 border-t grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="bg-white p-4 rounded-md shadow-sm"><strong>Desayuno (10:00 AM):</strong>
-                                    Chilaquiles con huevos, Parfaits de Yogur y fruta.</div>
-                                <div class="bg-white p-4 rounded-md shadow-sm"><strong>Día de Piscina:</strong>
-                                    Quesadillas, Taquitos de pollo, Guacamole y Salsa.</div>
-                                <div class="bg-white p-4 rounded-md shadow-sm"><strong>Cena al Atardecer:</strong>
-                                    Taquiza junto a la alberca (camarón, pescado, res).</div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Day 4 -->
-                    <div class="border rounded-lg bg-gray-50">
-                        <div class="accordion-header p-4 flex justify-between items-center">
-                            <h3 class="text-xl font-bold">Domingo, 26 de Octubre: Despedida</h3>
-                            <span class="text-2xl transform transition-transform duration-300 text-cyan-500">+</span>
-                        </div>
-                        <div class="accordion-content">
-                            <div class="p-4 border-t">
-                                <div class="bg-white p-4 rounded-md shadow-sm"><strong>Desayuno de Despedida (9:30
-                                        AM):</strong> Desayuno judío con Bagels y lox, Parfaits de Yogur y fruta.</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-6 bg-cyan-50 border-l-4 border-cyan-500 text-cyan-900 p-4 rounded-r-lg">
-                        <p><strong class="font-bold">Nota del Chef sobre la Cena del Sábado:</strong> Por su comodidad y
-                            seguridad, y como previsión ante la posible lluvia de octubre, hemos reubicado la cena de
-                            tacos del club de playa al área de la alberca. Esto nos permite garantizar un servicio
-                            impecable y un mayor confort para todos sus invitados mientras disfrutan del atardecer.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="alergias" class="tab-content">
-                <h2 class="text-3xl font-bold text-center mb-8">Plan de Atención Culinaria Personalizado</h2>
-                <div class="bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 p-4 rounded-r-lg mb-8">
-                    <p><strong class="font-bold">Protocolo General:</strong> Para la seguridad y tranquilidad de todos,
-                        el menú del fin de semana será **100% libre de nueces y cacahuates**.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-white p-4 rounded-lg border-t-4 border-cyan-500 shadow-sm"><strong>Kate G. & Meaghan
-                            L. (Vegetariano):</strong> Opciones gourmet dedicadas en cada comida principal.</div>
-                    <div class="bg-white p-4 rounded-lg border-t-4 border-cyan-500 shadow-sm"><strong>Dorothy H. M. (Sin
-                            Gluten):</strong> Adaptaciones con productos certificados sin gluten en todas las comidas
-                        principales.</div>
-                    <div class="bg-white p-4 rounded-lg border-t-4 border-cyan-500 shadow-sm"><strong>Eliza C. (Sin
-                            Mariscos):</strong> Plancha de cocción separada y deliciosas alternativas.</div>
-                    <div class="bg-white p-4 rounded-lg border-t-4 border-cyan-500 shadow-sm"><strong>Max B. (Sin
-                            Aguacate):</strong> Porciones especiales preparadas sin aguacate.</div>
-                    <div class="bg-white p-4 rounded-lg border-t-4 border-cyan-500 shadow-sm"><strong>David C. (Sin
-                            Kiwi):</strong> Garantía de que ninguna preparación contendrá kiwi.</div>
-                    <div
-                        class="bg-white p-4 rounded-lg border-t-4 border-cyan-500 shadow-sm md:col-span-2 lg:col-span-1">
-                        <strong>Hora del Cóctel:</strong> No se prepararán alternativas dietéticas específicas.</div>
-                </div>
-            </div>
+    <header class="text-center py-10 px-4 relative">
+        <div class="absolute top-4 right-4 flex space-x-2">
+            <button onclick="setLanguage('es')" id="btn-es" class="lang-btn active">🇪🇸 ES</button>
+            <button onclick="setLanguage('en')" id="btn-en" class="lang-btn">🇺🇸 EN</button>
         </div>
 
+        <p class="text-xl sm:text-2xl tracking-widest text-[var(--brand-teal)] mt-4 font-semibold">VERANO ESTATE</p>
+        <h1 class="text-3xl sm:text-4xl mt-2" data-i18n="formTitle">Formulario de Información de Huéspedes</h1>
+        <p class="text-sm text-gray-500 mt-2">by Chef Franko</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 pb-12">
+        <form id="guestForm" action="https://formspree.io/f/your-form-id" method="POST">
+            
+            <!-- Sección 1: Información Básica -->
+            <section class="form-section rounded-lg p-6 mb-8 shadow-md">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <span class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">1</span>
+                    <span data-i18n="basicInfo">Información Básica</span>
+                </h2>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="groupName">Nombre del Grupo</label>
+                        <input type="text" name="group_name" class="w-full px-4 py-3 rounded-lg input-field" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="contactLeader">Contacto/Líder</label>
+                        <input type="text" name="contact_leader" class="w-full px-4 py-3 rounded-lg input-field" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="phone">Teléfono</label>
+                        <input type="tel" name="phone" class="w-full px-4 py-3 rounded-lg input-field" required>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección 2: Transporte -->
+            <section class="form-section rounded-lg p-6 mb-8 shadow-md">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <span class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">2</span>
+                    <span data-i18n="transportTitle">Transporte del Aeropuerto</span>
+                </h2>
+                <div class="space-y-3">
+                    <label class="flex items-center cursor-pointer"><input type="radio" name="transportation" value="VIP Roundtrip" class="mr-3"><span data-i18n="transVipRound">VIP SUV Transfer: Viaje redondo</span></label>
+                    <label class="flex items-center cursor-pointer"><input type="radio" name="transportation" value="VIP Arrival" class="mr-3"><span data-i18n="transVipArr">Solo llegada</span></label>
+                    <label class="flex items-center cursor-pointer"><input type="radio" name="transportation" value="Taxi" class="mr-3"><span data-i18n="transTaxi">Taxi por su cuenta</span></label>
+                </div>
+            </section>
+
+            <!-- Sección 3: Estadía y Habitaciones -->
+            <section class="form-section rounded-lg p-6 mb-8 shadow-md">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <span class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">3</span>
+                    <span data-i18n="stayTitle">Estadía y Habitaciones</span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="arrivalDate">Fecha de Llegada</label>
+                        <input type="date" name="arrival_date" class="w-full px-4 py-3 rounded-lg input-field">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="departureDate">Fecha de Salida</label>
+                        <input type="date" name="departure_date" class="w-full px-4 py-3 rounded-lg input-field">
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6">
+                     <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="totalAdults">Adultos</label>
+                        <input type="number" name="adults" class="w-full px-4 py-3 rounded-lg input-field">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="children">Niños (edades)</label>
+                        <input type="text" name="children" class="w-full px-4 py-3 rounded-lg input-field" data-i18n-placeholder="childrenPlaceholder" placeholder="Ej: 8, 12">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección 4: Servicios y Actividades -->
+            <section class="form-section rounded-lg p-6 mb-8 shadow-md">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <span class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">4</span>
+                    <span data-i18n="servicesTitle">Servicios y Actividades</span>
+                </h2>
+                <p class="text-sm text-gray-600 mb-4" data-i18n="servicesDesc">Marque si desea información o reservar:</p>
+                <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer">
+                        <input type="checkbox" name="activities" value="Mariachi" class="mr-2 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]">
+                        <span data-i18n="actMariachi">Mariachi</span>
+                    </label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer">
+                        <input type="checkbox" name="activities" value="Yoga" class="mr-2 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]">
+                        <span data-i18n="actYoga">Clase de Yoga</span>
+                    </label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer">
+                        <input type="checkbox" name="activities" value="Yacht" class="mr-2 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]">
+                        <span data-i18n="actYacht">Yate Privado</span>
+                    </label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer">
+                        <input type="checkbox" name="activities" value="Massage" class="mr-2 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]">
+                        <span data-i18n="actMassage">Masajes / Spa</span>
+                    </label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer">
+                        <input type="checkbox" name="activities" value="Tours" class="mr-2 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]">
+                        <span data-i18n="actTours">Tours Locales</span>
+                    </label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer">
+                        <input type="checkbox" name="activities" value="ATV" class="mr-2 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]">
+                        <span data-i18n="actATV">Tour en ATV</span>
+                    </label>
+                </div>
+                
+                <div class="mt-6">
+                     <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="dietary">Alergias o Restricciones Alimenticias</label>
+                     <textarea name="allergies" rows="3" class="w-full px-4 py-3 rounded-lg input-field"></textarea>
+                </div>
+            </section>
+
+            <!-- Botones de envío -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                <button type="submit" class="btn-primary font-semibold py-4 px-8 rounded-lg shadow-lg flex items-center justify-center transition transform hover:scale-105">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    <span data-i18n="btnSubmit">Enviar Formulario</span>
+                </button>
+                <button type="button" onclick="sendToWhatsApp()" class="btn-secondary font-semibold py-4 px-8 rounded-lg shadow-lg flex items-center justify-center transition transform hover:scale-105">
+                    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.63z" /></svg>
+                    <span data-i18n="btnWhatsapp">Enviar por WhatsApp</span>
+                </button>
+                <button type="reset" class="btn-tertiary font-semibold py-4 px-8 rounded-lg shadow-lg flex items-center justify-center transition transform hover:scale-105">
+                    <span data-i18n="btnClear">Limpiar Formulario</span>
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <footer class="bg-[var(--brand-teal)] text-white py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <p class="font-bold text-lg tracking-wide">VERANO ESTATE by Chef Franko</p>
+            <div class="social-icons flex justify-center my-5 space-x-6">
+                <a href="https://www.instagram.com/veranostate/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-white transition-colors duration-300">
+                    <span class="sr-only">Instagram</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919C8.416 2.175 8.796 2.163 12 2.163zm0 1.44c-3.115 0-3.486.011-4.71.066-2.783.127-3.995 1.33-4.122 4.122-.056 1.223-.066 1.594-.066 4.709 0 3.115.011 3.486.066 4.71.127 2.783 1.339 3.995 4.122 4.122 1.223.056 1.594.066 4.709.066 3.115 0 3.486-.011 4.71-.066 2.783-.127 3.995-1.33 4.122-4.122.056-1.223.066-1.594.066-4.709 0-3.115-.011-3.486-.066-4.71-.127-2.783-1.339-3.995-4.122-4.122-1.224-.055-1.595-.066-4.71-.066zm0 2.88c-1.802 0-3.262 1.46-3.262 3.262s1.46 3.262 3.262 3.262 3.262-1.46 3.262-3.262-1.46-3.262-3.262-3.262zm0 5.08c-.997 0-1.812-.815-1.812-1.812s.815-1.812 1.812-1.812 1.812.815 1.812 1.812-.815 1.812-1.812 1.812zm4.332-5.182c-.378 0-.683.305-.683.683s.305.683.683.683.683-.305.683-.683-.305-.683-.683-.683z"/>
+                    </svg>
+                </a>
+                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-300">
+                    <span class="sr-only">Facebook</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v2.385z"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="text-gray-300 space-y-1">
+                <p>+52 322 160 6843</p>
+                <p>franko@veranostate.com</p>
+            </div>
+            <div class="mt-6 border-t border-gray-700 pt-6">
+                <p class="text-sm text-gray-400">&copy; 2025 VERANO ESTATE. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mensaje de estado -->
+    <div id="statusMessage" class="fixed bottom-4 right-4 transform translate-x-full transition-transform duration-300 hidden">
+        <div id="statusMessageContent" class="max-w-sm rounded-lg shadow-2xl p-4 text-white flex items-center bg-green-500">
+            <span id="statusMessageIcon" class="mr-3"></span>
+            <span id="statusMessageText"></span>
+            <button onclick="closeStatusMessage()" class="ml-4 text-white hover:text-gray-200">&times;</button>
+        </div>
     </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const tabs = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
+        // Diccionario de traducciones
+        const translations = {
+            es: {
+                formTitle: "Formulario de Información de Huéspedes",
+                basicInfo: "Información Básica",
+                groupName: "Nombre del Grupo",
+                contactLeader: "Contacto/Líder",
+                phone: "Teléfono",
+                transportTitle: "Transporte del Aeropuerto",
+                transVipRound: "VIP SUV Transfer: Viaje redondo",
+                transVipArr: "Solo llegada",
+                transTaxi: "Taxi por su cuenta",
+                stayTitle: "Estadía y Habitaciones",
+                arrivalDate: "Fecha de Llegada",
+                departureDate: "Fecha de Salida",
+                totalAdults: "Adultos",
+                children: "Niños (edades)",
+                childrenPlaceholder: "Ej: 8, 12",
+                servicesTitle: "Servicios y Actividades",
+                servicesDesc: "Marque si desea información o reservar:",
+                actMariachi: "Mariachi",
+                actYoga: "Clase de Yoga",
+                actYacht: "Yate Privado",
+                actMassage: "Masajes / Spa",
+                actTours: "Tours Locales",
+                actATV: "Tour en ATV",
+                dietary: "Alergias o Restricciones Alimenticias",
+                btnSubmit: "Enviar Formulario",
+                btnWhatsapp: "Enviar por WhatsApp",
+                btnClear: "Limpiar Formulario"
+            },
+            en: {
+                formTitle: "Guest Information Form",
+                basicInfo: "Basic Information",
+                groupName: "Group Name",
+                contactLeader: "Contact/Leader",
+                phone: "Phone Number",
+                transportTitle: "Airport Transportation",
+                transVipRound: "VIP SUV Transfer: Round Trip",
+                transVipArr: "Arrival Only",
+                transTaxi: "Taxi on your own",
+                stayTitle: "Stay & Rooms",
+                arrivalDate: "Arrival Date",
+                departureDate: "Departure Date",
+                totalAdults: "Adults",
+                children: "Children (ages)",
+                childrenPlaceholder: "E.g.: 8, 12",
+                servicesTitle: "Services & Activities",
+                servicesDesc: "Check if you want info or to book:",
+                actMariachi: "Mariachi Band",
+                actYoga: "Yoga Class",
+                actYacht: "Private Yacht",
+                actMassage: "Massage / Spa",
+                actTours: "Local Tours",
+                actATV: "ATV Tour",
+                dietary: "Allergies or Dietary Restrictions",
+                btnSubmit: "Submit Form",
+                btnWhatsapp: "Send via WhatsApp",
+                btnClear: "Clear Form"
+            }
+        };
 
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    tabContents.forEach(content => content.classList.remove('active'));
-                    document.getElementById(tab.dataset.tab).classList.add('active');
-                });
-            });
-
-            const accordions = document.querySelectorAll('.accordion-header');
-            accordions.forEach(accordion => {
-                accordion.addEventListener('click', () => {
-                    const content = accordion.nextElementSibling;
-                    const icon = accordion.querySelector('span');
-                    if (content.style.maxHeight) {
-                        content.style.maxHeight = null;
-                        icon.style.transform = 'rotate(0deg)';
-                    } else {
-                        content.style.maxHeight = content.scrollHeight + 'px';
-                        icon.style.transform = 'rotate(45deg)';
-                    }
-                });
-            });
-
-            const tooltipTitleCallback = (tooltipItems) => {
-                const item = tooltipItems[0];
-                let label = item.chart.data.labels[item.dataIndex];
-                if (Array.isArray(label)) { return label.join(' '); }
-                return label;
-            };
-
-            const mealsCtx = document.getElementById('mealsChart').getContext('2d');
-            new Chart(mealsCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Desayunos', 'Almuerzos', 'Cenas', 'Snacks/Otros'],
-                    datasets: [{
-                        label: 'Número de Servicios',
-                        data: [4, 3, 3, 4],
-                        backgroundColor: ['#06b6d4', '#0891b2', '#0e7490', '#164e63'],
-                        borderColor: '#FFFFFF',
-                        borderWidth: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom' },
-                        title: {
-                            display: true,
-                            text: 'Distribución de Servicios Culinarios'
-                        },
-                        tooltip: { callbacks: { title: tooltipTitleCallback } }
-                    }
+        // Función para cambiar idioma
+        function setLanguage(lang) {
+            // Actualizar textos
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
                 }
             });
+
+            // Actualizar placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    element.placeholder = translations[lang][key];
+                }
+            });
+
+            // Actualizar estilos de botones
+            document.getElementById('btn-es').classList.remove('active');
+            document.getElementById('btn-en').classList.remove('active');
+            document.getElementById(`btn-${lang}`).classList.add('active');
+
+            // Guardar preferencia
+            localStorage.setItem('lang', lang);
+        }
+
+        // Función para enviar a WhatsApp
+        function sendToWhatsApp() {
+            const form = document.getElementById('guestForm');
+            const formData = new FormData(form);
+            
+            let message = "🌴 *NUEVA RESERVA / NEW BOOKING* 🌴\n\n";
+            
+            const get = (name) => formData.get(name) || 'N/A';
+
+            message += `👤 *Grupo:* ${get('group_name')}\n`;
+            message += `👑 *Líder:* ${get('contact_leader')}\n`;
+            message += `📞 *Teléfono:* ${get('phone')}\n\n`;
+            
+            message += `🚗 *Transporte:* ${get('transportation')}\n`;
+            message += `📅 *Fechas:* ${get('arrival_date')} a ${get('departure_date')}\n`;
+            message += `👥 *Huéspedes:* ${get('adults')} Adultos, Niños: ${get('children')}\n\n`;
+            
+            // Actividades seleccionadas
+            const activities = formData.getAll('activities');
+            if(activities.length > 0) {
+                message += `✨ *Actividades:* ${activities.join(', ')}\n`;
+            }
+            
+            message += `🚫 *Alergias/Dieta:* ${get('allergies')}\n`;
+
+            const phone = "523221606843";
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // Funciones para mensajes de estado
+        let statusTimeout;
+        function showStatusMessage(message, isError = false) {
+            const statusMessage = document.getElementById('statusMessage');
+            const content = document.getElementById('statusMessageContent');
+            const text = document.getElementById('statusMessageText');
+            const icon = document.getElementById('statusMessageIcon');
+
+            clearTimeout(statusTimeout);
+
+            text.textContent = message;
+            content.className = `max-w-sm rounded-lg shadow-2xl p-4 text-white flex items-center ${isError ? 'bg-red-500' : 'bg-green-500'}`;
+            icon.innerHTML = isError
+                ? `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`
+                : `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+
+            statusMessage.classList.remove('hidden');
+            setTimeout(() => statusMessage.classList.remove('translate-x-full'), 10);
+
+            statusTimeout = setTimeout(closeStatusMessage, 5000);
+        }
+
+        function closeStatusMessage() {
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.classList.add('translate-x-full');
+            clearTimeout(statusTimeout);
+        }
+
+        // Manejar envío del formulario
+        document.getElementById('guestForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const btnText = submitBtn.querySelector('span');
+            const originalText = btnText.textContent;
+
+            btnText.textContent = 'Enviando...';
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    showStatusMessage('¡Formulario enviado exitosamente! Gracias.');
+                    form.reset();
+                } else {
+                    const data = await response.json();
+                    throw new Error(data.errors?.map(e => e.message).join(', ') || 'Error en el envío.');
+                }
+            } catch (error) {
+                showStatusMessage(`Hubo un error: ${error.message}`, true);
+            } finally {
+                btnText.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Inicializar idioma al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLang = localStorage.getItem('lang') || 'es';
+            setLanguage(savedLang);
         });
     </script>
 </body>
