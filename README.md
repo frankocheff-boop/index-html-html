@@ -1,14 +1,11 @@
- <!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
-   <div style="position: absolute; top: 20px; right: 20px; z-index: 50;">
-    <button onclick="cambiarIdioma('es')" class="lang-btn active">🇪🇸 ES</button>
-    <button onclick="cambiarIdioma('en')" class="lang-btn">🇺🇸 EN</button>
-</div>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guest Information Form - Verano Estate</title>
+    <title>Formulario de Información de Huéspedes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
@@ -24,7 +21,9 @@
             color: #333;
         }
 
-        h1, h2, h3 {
+        h1,
+        h2,
+        h3 {
             font-family: 'Playfair Display', serif;
             color: var(--brand-teal);
         }
@@ -45,474 +44,275 @@
             box-shadow: 0 0 0 2px rgba(0, 60, 60, 0.2);
         }
 
+        .btn {
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.2s ease-in-out;
+            border: 1px solid transparent;
+        }
+
         .btn-primary {
             background-color: var(--brand-teal);
             color: white;
         }
-        .btn-primary:hover { background-color: #002a2a; }
-        
+
+        .btn-primary:hover {
+            background-color: #002a2a;
+        }
+
         .btn-secondary {
             background-color: #4c7c7c;
             color: white;
         }
 
-        /* Estilos para el selector de idioma */
-        .lang-btn {
-            cursor: pointer;
-            padding: 5px 10px;
-            border: 1px solid var(--brand-teal);
-            border-radius: 5px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            transition: all 0.3s;
+        .btn-secondary:hover {
+            background-color: #3d6363;
         }
-        .lang-btn.active {
-            background-color: var(--brand-teal);
-            color: white;
+
+        .btn-tertiary {
+            background-color: #e5e7eb;
+            color: #374151;
         }
-        .lang-btn:hover:not(.active) {
-            background-color: #e0e0e0;
-        }/* PEGAR ESTO DENTRO DE <style> */
-.lang-btn {
-    background: white;
-    border: 1px solid #003C3C; /* Tu color brand-teal */
-    color: #003C3C;
-    padding: 5px 10px;
-    margin-left: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-.lang-btn:hover { background: #f0f0f0; }
-.lang-btn.active {
-    background: #003C3C;
-    color: white;
-}
+
+        .btn-tertiary:hover {
+            background-color: #d1d5db;
+        }
+
+        #roomAssignmentTable tbody tr:nth-child(odd) {
+            background-color: #f9fafb;
+        }
     </style>
 </head>
 
 <body class="antialiased">
 
-    <header class="text-center py-10 px-4 relative">
-        <div class="absolute top-4 right-4 flex space-x-2">
-            <button onclick="setLanguage('es')" id="btn-es" class="lang-btn active">🇪🇸 ES</button>
-            <button onclick="setLanguage('en')" id="btn-en" class="lang-btn">🇺🇸 EN</button>
-        </div>
+    <!-- Encabezado con logo -->
+    <header class="text-center py-10 px-4">
 
         <p class="text-xl sm:text-2xl tracking-widest text-[var(--brand-teal)] mt-4 font-semibold">VERANO ESTATE</p>
-        <h1 class="text-3xl sm:text-4xl mt-2" data-i18n="formTitle">Formulario de Información de Huéspedes</h1>
+        <h1 class="text-3xl sm:text-4xl mt-2">Formulario de Información de Huéspedes</h1>
         <p class="text-sm text-gray-500 mt-2">by Chef Franko</p>
     </header>
 
+    <!-- WiFi Info Section -->
+    <div class="max-w-md mx-auto my-8 px-4">
+        <img src="https://i.imgur.com/1CQ3BSd.png" alt="Información de WiFi" class="w-full h-auto rounded-lg shadow-md">
+    </div>
+
+    <!-- Status Message Container -->
+    <div id="statusMessage" class="hidden fixed top-5 right-5 z-50 transition-transform transform translate-x-full">
+        <div id="statusMessageContent" class="max-w-sm rounded-lg shadow-2xl p-4 text-white flex items-center">
+            <span id="statusMessageIcon" class="mr-3"></span>
+            <p id="statusMessageText" class="flex-grow"></p>
+            <button onclick="closeStatusMessage()"
+                class="ml-4 -mx-1.5 -my-1.5 p-1.5 rounded-lg inline-flex h-8 w-8 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white">
+                <span class="sr-only">Cerrar</span>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
     <main class="max-w-6xl mx-auto px-6 pb-12">
-        <form id="guestForm">
-            
+        <form id="guestForm" action="https://formspree.io/f/xvgqddpg" method="POST">
+            <!-- Basic Information -->
             <section class="form-section rounded-lg p-6 mb-8 shadow-md">
                 <h2 class="text-2xl font-bold mb-6 flex items-center">
-                    <span class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">1</span>
-                    <span data-i18n="basicInfo">Información Básica</span>
+                    <span
+                        class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">1</span>
+                    Información Básica
                 </h2>
                 <div class="grid md:grid-cols-3 gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="groupName">Nombre del Grupo</label>
-                        <input type="text" name="group_name" class="w-full px-4 py-3 rounded-lg input-field" required>
+                        <label for="group_name" class="block text-sm font-medium text-gray-700 mb-2">Nombre del
+                            Grupo</label>
+                        <input type="text" id="group_name" name="group_name"
+                            class="w-full px-4 py-3 rounded-lg input-field" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="contactLeader">Contacto/Líder</label>
-                        <input type="text" name="contact_leader" class="w-full px-4 py-3 rounded-lg input-field" required>
+                        <label for="contact_leader"
+                            class="block text-sm font-medium text-gray-700 mb-2">Contacto/Líder</label>
+                        <input type="text" id="contact_leader" name="contact_leader"
+                            class="w-full px-4 py-3 rounded-lg input-field" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="phone">Teléfono</label>
-                        <input type="tel" name="phone" class="w-full px-4 py-3 rounded-lg input-field" required>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Teléfono</label>
+                        <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 rounded-lg input-field"
+                            required>
                     </div>
                 </div>
             </section>
 
+            <!-- Transportation -->
             <section class="form-section rounded-lg p-6 mb-8 shadow-md">
                 <h2 class="text-2xl font-bold mb-6 flex items-center">
-                    <span class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">2</span>
-                    <span data-i18n="transportTitle">Transporte del Aeropuerto</span>
+                    <span
+                        class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">2</span>
+                    Transporte del Aeropuerto a la Villa
                 </h2>
                 <div class="space-y-3">
-                    <label class="flex items-center cursor-pointer"><input type="radio" name="transportation" value="VIP Roundtrip" class="mr-3"><span data-i18n="transVipRound">VIP SUV Transfer: Viaje redondo</span></label>
-                    <label class="flex items-center cursor-pointer"><input type="radio" name="transportation" value="VIP Arrival" class="mr-3"><span data-i18n="transVipArr">Solo llegada</span></label>
-                    <label class="flex items-center cursor-pointer"><input type="radio" name="transportation" value="Taxi" class="mr-3"><span data-i18n="transTaxi">Taxi por su cuenta</span></label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input type="radio"
+                            name="transportation" value="vip_roundtrip"
+                            class="mr-3 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]"><span>VIP SUV Transfer
+                            del Aeropuerto: Viaje redondo</span></label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input type="radio"
+                            name="transportation" value="vip_arrival"
+                            class="mr-3 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]"><span>Solo
+                            llegada</span></label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input type="radio"
+                            name="transportation" value="vip_departure"
+                            class="mr-3 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]"><span>Solo
+                            salida</span></label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input type="radio"
+                            name="transportation" value="taxi"
+                            class="mr-3 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]"><span>Taxi por su
+                            cuenta</span></label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input type="radio"
+                            name="transportation" value="other"
+                            class="mr-3 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]"><span>Otro</span></label>
                 </div>
             </section>
 
+            <!-- Room Information -->
             <section class="form-section rounded-lg p-6 mb-8 shadow-md">
                 <h2 class="text-2xl font-bold mb-6 flex items-center">
-                    <span class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">3</span>
-                    <span data-i18n="stayTitle">Estadía y Habitaciones</span>
+                    <span
+                        class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">3</span>
+                    Información de Estadía y Habitaciones
                 </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 border-b pb-6">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="arrivalDate">Fecha de Llegada</label>
-                        <input type="date" name="arrival_date" class="w-full px-4 py-3 rounded-lg input-field">
+                        <label for="main_arrival_date" class="block text-sm font-medium text-gray-700 mb-2">Fecha
+                            Principal de Llegada del Grupo</label>
+                        <input type="date" id="main_arrival_date" name="main_arrival_date"
+                            class="w-full px-4 py-3 rounded-lg input-field" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="departureDate">Fecha de Salida</label>
-                        <input type="date" name="departure_date" class="w-full px-4 py-3 rounded-lg input-field">
+                        <label for="main_departure_date" class="block text-sm font-medium text-gray-700 mb-2">Fecha
+                            Principal de Salida del Grupo</label>
+                        <input type="date" id="main_departure_date" name="main_departure_date"
+                            class="w-full px-4 py-3 rounded-lg input-field" required>
                     </div>
                 </div>
-                <div class="grid md:grid-cols-2 gap-6">
-                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="totalAdults">Adultos</label>
-                        <input type="number" name="adults" class="w-full px-4 py-3 rounded-lg input-field">
+
+                <div class="grid md:grid-cols-3 gap-6 mb-6">
+                    <div>
+                        <label for="rooms_reserved" class="block text-sm font-medium text-gray-700 mb-2">Número de
+                            habitaciones reservadas</label>
+                        <input type="number" id="rooms_reserved" name="rooms_reserved"
+                            class="w-full px-4 py-3 rounded-lg input-field" min="1" max="11">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="children">Niños (edades)</label>
-                        <input type="text" name="children" class="w-full px-4 py-3 rounded-lg input-field" placeholder="Ej: 8, 12">
+                        <label for="total_adults" class="block text-sm font-medium text-gray-700 mb-2">Total de
+                            Adultos</label>
+                        <input type="number" id="total_adults" name="total_adults"
+                            class="w-full px-4 py-3 rounded-lg input-field" min="1">
+                    </div>
+                    <div>
+                        <label for="children_ages" class="block text-sm font-medium text-gray-700 mb-2">Niños
+                            (edades)</label>
+                        <input type="text" id="children_ages" name="children_ages"
+                            placeholder="ej: 2 niños (8, 12 años)" class="w-full px-4 py-3 rounded-lg input-field">
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <p class="text-sm font-medium text-gray-700 mb-3">¿Prefiere pre-asignar habitaciones y registrar
+                        llegadas/salidas individuales?</p>
+                    <div class="flex space-x-6">
+                        <label class="flex items-center"><input type="radio" name="preassign_rooms" value="yes"
+                                class="mr-2 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]"
+                                onchange="toggleRoomAssignment(true)"><span>SÍ</span></label>
+                        <label class="flex items-center"><input type="radio" name="preassign_rooms" value="no"
+                                class="mr-2 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]"
+                                onchange="toggleRoomAssignment(false)" checked><span>NO</span></label>
+                    </div>
+                </div>
+                <div id="roomAssignment" class="hidden">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Registro Individual de Huéspedes</h3>
+                    <div class="overflow-x-auto rounded-lg border border-gray-200">
+                        <table id="roomAssignmentTable" class="w-full">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th
+                                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Hab.#</th>
+                                    <th
+                                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Huésped</th>
+                                    <th
+                                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Llegada</th>
+                                    <th
+                                        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Salida</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Rows are generated dynamically in JS -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
 
+            <!-- Additional Services -->
             <section class="form-section rounded-lg p-6 mb-8 shadow-md">
                 <h2 class="text-2xl font-bold mb-6 flex items-center">
-                    <span class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">4</span>
-                    <span data-i18n="servicesTitle">Servicios y Actividades</span>
+                    <span
+                        class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">4</span>
+                    Servicios Adicionales
                 </h2>
-                <p class="text-sm text-gray-600 mb-4" data-i18n="servicesDesc">Marque si desea información o reservar:</p>
-                <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    <label class="flex items-center"><input type="checkbox" name="activities" value="Mariachi" class="mr-2"><span data-i18n="actMariachi">Mariachi</span></label>
-                    <label class="flex items-center"><input type="checkbox" name="activities" value="Yoga" class="mr-2"><span data-i18n="actYoga">Yoga</span></label>
-                    <label class="flex items-center"><input type="checkbox" name="activities" value="Yacht" class="mr-2"><span data-i18n="actYacht">Yate Privado</span></label>
-                    <label class="flex items-center"><input type="checkbox" name="activities" value="Massage" class="mr-2"><span data-i18n="actMassage">Masajes / Spa</span></label>
-                    <label class="flex items-center"><input type="checkbox" name="activities" value="Tours" class="mr-2"><span data-i18n="actTours">Tours Locales</span></label>
-                </div>
-                
-                <div class="mt-6">
-                     <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="dietary">Alergias o Restricciones Alimenticias</label>
-                     <textarea name="allergies" rows="3" class="w-full px-4 py-3 rounded-lg input-field"></textarea>
+                <div class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-sm font-medium text-gray-700 mb-3">¿Le gustaría Servicio de Comida los
+                                Domingos?</p>
+                            <div class="flex space-x-6">
+                                <label class="flex items-center"><input type="radio" name="sunday_meal_service"
+                                        value="yes" class="mr-2 text-[var(--brand-teal)]"><span>SÍ (costos adicionales
+                                        aplican)</span></label>
+                                <label class="flex items-center"><input type="radio" name="sunday_meal_service"
+                                        value="no" class="mr-2 text-[var(--brand-teal)]"><span>NO</span></label>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-700 mb-3">¿Le gustaría Servicio de Limpieza los
+                                Domingos?</p>
+                            <div class="flex space-x-6">
+                                <label class="flex items-center"><input type="radio" name="sunday_maid_service"
+                                        value="yes" class="mr-2 text-[var(--brand-teal)]"><span>SÍ (costos adicionales
+                                        aplican)</span></label>
+                                <label class="flex items-center"><input type="radio" name="sunday_maid_service"
+                                        value="no" class="mr-2 text-[var(--brand-teal)]"><span>NO</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="special_requests" class="block text-sm font-medium text-gray-700 mb-2">¿Alguna
+                            solicitud especial al llegar?</label>
+                        <textarea id="special_requests" name="special_requests" rows="3"
+                            class="w-full px-4 py-3 rounded-lg input-field"></textarea>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="special_occasion" class="block text-sm font-medium text-gray-700 mb-2">¿Alguien
+                                celebrando una ocasión especial?</label>
+                            <input type="text" id="special_occasion" name="special_occasion"
+                                placeholder="ej: Cumpleaños, Aniversario"
+                                class="w-full px-4 py-3 rounded-lg input-field">
+                        </div>
+                        <div>
+                            <label for="occasion_date" class="block text-sm font-medium text-gray-700 mb-2">Fecha del
+                                evento</label>
+                            <input type="date" id="occasion_date" name="occasion_date"
+                                class="w-full px-4 py-3 rounded-lg input-field">
+                        </div>
+                    </div>
                 </div>
             </section>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-                <button type="button" onclick="sendToWhatsApp()" class="btn-secondary font-semibold py-4 px-8 rounded-lg shadow-lg flex items-center justify-center transition transform hover:scale-105">
-                    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.63z" /></svg>
-                    <span data-i18n="btnWhatsapp">Enviar por WhatsApp</span>
-                </button>
-            </div>
-        </form>
-    </main>
-
-    <script>
-        // 1. DICCIONARIO DE TRADUCCIONES
-        const translations = // --- PEGAR ESTO DENTRO DE <SCRIPT> ---
-
-// 1. Diccionario de palabras (AQUÍ AGREGAS TUS TEXTOS)
-const traducciones = {
-    'es': {
-        'titulo': 'Formulario de Información de Huéspedes',
-        'nombre_grupo': 'Nombre del Grupo',
-        'lider': 'Contacto/Líder',
-        'boton_enviar': 'Enviar Formulario'
-    },
-    'en': {
-        'titulo': 'Guest Information Form',
-        'nombre_grupo': 'Group Name',
-        'lider': 'Contact/Leader',
-        'boton_enviar': 'Submit Form'
-    }
-};
-
-// 2. Función que hace el cambio
-function cambiarIdioma(idioma) {
-    // Cambiar textos
-    const elementos = document.querySelectorAll('[data-traduccion]');
-    elementos.forEach(el => {
-        const clave = el.getAttribute('data-traduccion');
-        if (traducciones[idioma][clave]) {
-            el.innerText = traducciones[idioma][clave]; // Cambia el texto
-            el.placeholder = traducciones[idioma][clave]; // Cambia el placeholder si es input
-        }
-    });
-
-    // Cambiar color de botones
-    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-}{
-            es: {
-                formTitle: "Formulario de Información de Huéspedes",
-                basicInfo: "Información Básica",
-                groupName: "Nombre del Grupo",
-                contactLeader: "Contacto/Líder",
-                phone: "Teléfono",
-                transportTitle: "Transporte del Aeropuerto",
-                transVipRound: "VIP SUV Transfer: Viaje redondo",
-                transVipArr: "Solo llegada",
-                transTaxi: "Taxi por su cuenta",
-                stayTitle: "Estadía y Habitaciones",
-                arrivalDate: "Fecha de Llegada",
-                departureDate: "Fecha de Salida",
-                totalAdults: "Adultos",
-                children: "Niños (edades)",
-                servicesTitle: "Servicios y Actividades",
-                servicesDesc: "Marque si desea información o reservar:",
-                actMariachi: "Mariachi",
-                actYoga: "Clase de Yoga",
-                actYacht: "Yate Privado",
-                actMassage: "Masajes / Spa",
-                actTours: "Tours Locales",
-                dietary: "Alergias o Restricciones Alimenticias",
-                btnWhatsapp: "Enviar por WhatsApp"
-            },
-            en: {
-                formTitle: "Guest Information Form",
-                basicInfo: "Basic Information",
-                groupName: "Group Name",
-                contactLeader: "Contact/Leader",
-                phone: "Phone Number",
-                transportTitle: "Airport Transportation",
-                transVipRound: "VIP SUV Transfer: Round Trip",
-                transVipArr: "Arrival Only",
-                transTaxi: "Taxi on your own",
-                stayTitle: "Stay & Rooms",
-                arrivalDate: "Arrival Date",
-                departureDate: "Departure Date",
-                totalAdults: "Adults",
-                children: "Children (ages)",
-                servicesTitle: "Services & Activities",
-                servicesDesc: "Check if you want info or to book:",
-                actMariachi: "Mariachi Band",
-                actYoga: "Yoga Class",
-                actYacht: "Private Yacht",
-                actMassage: "Massage / Spa",
-                actTours: "Local Tours",
-                dietary: "Allergies or Dietary Restrictions",
-                btnWhatsapp: "Send via WhatsApp"
-            }
-        };
-
-        // 2. FUNCIÓN PARA CAMBIAR IDIOMA
-        function setLanguage(lang) {
-            // Actualizar textos
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                if (translations[lang][key]) {
-                    element.innerText = translations[lang][key];
-                }
-            });
-
-            // Actualizar estilos de botones
-            document.getElementById('btn-es').classList.remove('active');
-            document.getElementById('btn-en').classList.remove('active');
-            document.getElementById(`btn-${lang}`).classList.add('active');
-        }
-
-        // 3. ENVIAR A WHATSAPP (Recopila los datos y abre la app)
-        function sendToWhatsApp() {
-            const form = document.getElementById('guestForm');
-            const formData = new FormData(form);
-            
-            let message = "🌴 *NUEVA RESERVA / NEW BOOKING* 🌴\n\n";
-            
-            // Función simple para obtener valor
-            const get = (name) => formData.get(name) || 'N/A';
-
-            message += `👤 *Group:* ${get('group_name')}\n`;
-            message += `👑 *Leader:* ${get('contact_leader')}\n`;
-            message += `📞 *Phone:* ${get('phone')}\n\n`;
-            
-            message += `🚗 *Transport:* ${get('transportation')}\n`;
-            message += `📅 *Dates:* ${get('arrival_date')} to ${get('departure_date')}\n`;
-            message += `👥 *Guests:* ${get('adults')} Adults, Kids: ${get('children')}\n\n`;
-            
-            // Actividades seleccionadas
-            const activities = formData.getAll('activities');
-            if(activities.length > 0) {
-                message += `✨ *Interests:* ${activities.join(', ')}\n`;
-            }
-            
-            message += `🚫 *Dietary:* ${get('allergies')}\n`;
-
-            const phone = "523221606843"; // TU NÚMERO
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-        }
-    </script>
-</body>
-</html> 
- 
-
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-
-            // --- DATA FOR DYNAMIC CONTENT ---
-            const roomData = [
-                { number: 1, type: "Una Cama King" }, { number: 2, type: "2 Camas Queen" },
-                { number: 3, type: "2 Camas Queen" }, { number: 4, type: "Una Cama King" },
-                { number: 5, type: "2 Camas Queen" }, { number: 6, type: "2 Camas Queen" },
-                { number: 7, type: "2 Camas Queen" }, { number: 8, type: "2 Camas Queen" },
-                { number: 9, type: "Una Cama King" }, { number: 10, type: "2 Camas Queen" },
-                { number: 11, type: "Una Cama King" }
-            ];
-
-            const provisionData = [
-                {
-                    category: 'Bebidas Alcohólicas',
-                    items: [
-                        { name: 'Cerveza' }, { name: 'Tequila' }, { name: 'Vodka' }, { name: 'Whiskey' }, { name: 'Ron' },
-                        { name: 'Vino Tinto (Cabernet)' }, { name: 'Vino Blanco (Chardonnay)' }, { name: 'Vino Rosado' },
-                    ]
-                },
-                {
-                    category: 'Bebidas No Alcohólicas',
-                    items: [
-                        { name: 'Agua Embotellada' }, { name: 'Refrescos', brand_label: 'Marca(s) preferida(s)' },
-                        { name: 'Jugo', brand_label: 'Sabor(es) preferido(s)' },
-                    ]
-                },
-                {
-                    category: 'Comida y Snacks',
-                    items: [
-                        { name: 'Cereales' }, { name: 'Pan', brand_label: 'Tipo preferido' }, { name: 'Vegetales', brand_label: 'Tipos preferidos' },
-                        { name: 'Frutas', brand_label: 'Tipos preferidos' }, { name: 'Café' }, { name: 'Leche', brand_label: 'Tipo preferido' },
-                        { name: 'Botanas (papas, nueces)', brand_label: 'Tipos preferidos' }
-                    ]
-                },
-                {
-                    category: 'Artículos de Aseo Personal',
-                    items: [
-                        { name: 'Cepillos de dientes', type: 'info', text: 'Incluidos en su estancia' },
-                        { name: 'Pasta de dientes', type: 'info', text: 'Incluida en su estancia' },
-                        { name: 'Bloqueador Solar' }, { name: 'Repelente de insectos' },
-                    ]
-                }
-            ];
-
-            // --- DYNAMIC CONTENT GENERATION ---
-            function generateProvisionList() {
-                const container = document.getElementById('provisionListContainer');
-                container.innerHTML = ''; // Clear existing content
-
-                provisionData.forEach(categoryObj => {
-                    const categoryWrapper = document.createElement('div');
-
-                    const categoryTitle = document.createElement('h3');
-                    categoryTitle.className = "text-xl font-bold text-gray-800 mb-4";
-                    categoryTitle.textContent = categoryObj.category;
-                    categoryWrapper.appendChild(categoryTitle);
-
-                    const itemsGrid = document.createElement('div');
-                    itemsGrid.className = 'grid md:grid-cols-2 gap-x-8 gap-y-4';
-
-                    categoryObj.items.forEach(item => {
-                        const item_id = item.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
-
-                        if (item.type === 'info') {
-                            itemsGrid.innerHTML += `<div class="md:col-span-2 grid grid-cols-2 gap-3 items-center"><label class="block text-sm text-gray-700">${item.name}</label><p class="text-sm text-gray-500">${item.text}</p></div>`;
-                        } else {
-                            itemsGrid.innerHTML += `<div class="grid grid-cols-2 gap-3"><div><label for="${item_id}_amount" class="block text-xs text-gray-600 mb-1">${item.name} - Cantidad</label><input type="text" id="${item_id}_amount" name="${item_id}_amount" class="w-full px-3 py-2 text-sm rounded input-field"></div><div><label for="${item_id}_brand" class="block text-xs text-gray-600 mb-1">${item.brand_label || 'Marca preferida'}</label><input type="text" id="${item_id}_brand" name="${item_id}_brand" class="w-full px-3 py-2 text-sm rounded input-field"></div></div>`;
-                        }
-                    });
-                    categoryWrapper.appendChild(itemsGrid);
-                    container.appendChild(categoryWrapper);
-                });
-            }
-
-            const roomTableBody = document.querySelector('#roomAssignmentTable tbody');
-            roomData.forEach(room => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="px-4 py-3 border-t border-gray-200 align-top text-sm">
-                        <span class="font-semibold">${room.number}</span>
-                        <p class="text-xs text-gray-500 whitespace-nowrap">${room.type}</p>
-                    </td>
-                    <td class="px-4 py-3 border-t border-gray-200 align-top">
-                        <input type="text" name="room_${room.number}_guest" placeholder="Nombre del Huésped" class="w-full text-sm p-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-[var(--brand-teal)] bg-transparent">
-                    </td>
-                    <td class="px-4 py-3 border-t border-gray-200 align-top">
-                        <input type="date" name="room_${room.number}_arrival_date" class="block w-full text-sm p-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-[var(--brand-teal)]">
-                        <input type="time" name="room_${room.number}_arrival_time" class="block w-full text-sm mt-1 p-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-[var(--brand-teal)]">
-                        <input type="text" name="room_${room.number}_arrival_flight" placeholder="Vuelo" class="block w-full text-sm mt-1 p-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-[var(--brand-teal)]">
-                    </td>
-                    <td class="px-4 py-3 border-t border-gray-200 align-top">
-                        <input type="date" name="room_${room.number}_departure_date" class="block w-full text-sm p-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-[var(--brand-teal)]">
-                        <input type="time" name="room_${room.number}_departure_time" class="block w-full text-sm mt-1 p-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-[var(--brand-teal)]">
-                        <input type="text" name="room_${room.number}_departure_flight" placeholder="Vuelo" class="block w-full text-sm mt-1 p-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-[var(--brand-teal)]">
-                    </td>
-                `;
-                roomTableBody.appendChild(row);
-            });
-
-            generateProvisionList();
-
-            // --- EVENT LISTENERS & FORM LOGIC ---
-            document.getElementById('guestForm').addEventListener('submit', handleFormSubmit);
-
-            // --- UI TOGGLE FUNCTIONS (made available globally) ---
-            window.toggleRoomAssignment = (show) => {
-                document.getElementById('roomAssignment').classList.toggle('hidden', !show);
-            };
-
-            // --- WHATSAPP INTEGRATION ---
-            window.sendToWhatsApp = () => {
-                const formData = new FormData(document.getElementById('guestForm'));
-                let message = "🏝️ *FORMULARIO DE INFORMACIÓN DE HUÉSPEDES* 🏝️\n\n";
-                const getVal = (name) => formData.get(name) || 'N/A';
-
-                // Sections
-                message += `*1. INFORMACIÓN BÁSICA*\n• Grupo: ${getVal('group_name')}\n• Líder: ${getVal('contact_leader')}\n• Teléfono: ${getVal('phone')}\n\n`;
-                message += `*2. TRANSPORTE*\n• Opción: ${getVal('transportation')}\n\n`;
-                message += `*3. ESTADÍA Y HABITACIONES*\n• Llegada Grupo: ${getVal('main_arrival_date')}\n• Salida Grupo: ${getVal('main_departure_date')}\n• # Habitaciones: ${getVal('rooms_reserved')}\n• Adultos: ${getVal('total_adults')}\n• Niños: ${getVal('children_ages')}\n• Registrar Individualmente: ${getVal('preassign_rooms')}\n`;
-
-                if (getVal('preassign_rooms') === 'yes') {
-                    message += "\n*REGISTRO INDIVIDUAL:*\n";
-                    for (let i = 1; i <= 11; i++) {
-                        const guest = getVal(`room_${i}_guest`);
-                        if (guest && guest.trim() !== '' && guest !== 'N/A') {
-                            const arrDate = getVal(`room_${i}_arrival_date`) || 's/f';
-                            const arrTime = getVal(`room_${i}_arrival_time`) || '';
-                            const arrFlight = getVal(`room_${i}_arrival_flight`) || 's/v';
-                            const depDate = getVal(`room_${i}_departure_date`) || 's/f';
-                            const depTime = getVal(`room_${i}_departure_time`) || '';
-                            const depFlight = getVal(`room_${i}_departure_flight`) || 's/v';
-
-                            message += `\n*Hab. ${i}: ${guest}*\n`;
-                            message += `  Llegada: ${arrDate} ${arrTime} (Vuelo: ${arrFlight})\n`;
-                            message += `  Salida: ${depDate} ${depTime} (Vuelo: ${depFlight})\n`;
-                        }
-                    }
-                }
-                message += "\n";
-
-                message += `*4. SERVICIOS ADICIONALES*\n• Comida Domingo: ${getVal('sunday_meal_service')}\n• Limpieza Domingo: ${getVal('sunday_maid_service')}\n• Solicitudes: ${getVal('special_requests')}\n• Ocasión: ${getVal('special_occasion')} (${getVal('occasion_date')})\n\n`;
-
-                const activities = formData.getAll('activities');
-                if (activities.length > 0) {
-                    message += `*5. ACTIVIDADES DE INTERÉS*\n• ${activities.join(', ')}\n\n`;
-                }
-
-                message += `*6. PROVISIONES SOLICITADAS*\n`;
-                let provisionsRequested = false;
-                provisionData.forEach(category => {
-                    category.items.forEach(item => {
-                        if (item.type !== 'info') {
-                            const item_id = item.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
-                            const amount = getVal(`${item_id}_amount`);
-                            const brand = getVal(`${item_id}_brand`);
-                            if (amount && amount.trim() !== '' && amount !== 'N/A') {
-                                provisionsRequested = true;
-                                message += `• ${item.name}: ${amount} (Marca: ${brand})\n`;
-                            }
-                        }
-                    });
-                });
-                if (!provisionsRequested) { message += "• Ninguna solicitud especial.\n"; }
-                message += "\n";
-
-                const additionalInfo = getVal('additional_info');
-                if (additionalInfo && additionalInfo.trim() !== '' && additionalInfo !== 'N/A') {
-                    message += `*INFORMACIÓN ADICIONAL*\n${additionalInfo}\n\n`;
-                }
-
-                message += "¡Gracias por completar el formulario! 🌴";
-                const phoneNumber = "523221606843";
-                window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
-            };
-        });
-</section>
 
             <!-- Special Activities -->
             <section class="form-section rounded-lg p-6 mb-8 shadow-md">
@@ -889,5 +689,4 @@ function cambiarIdioma(idioma) {
     </script>
 </body>
 
-</html># state-verano-by
-formulario clientes dijital
+</html>
