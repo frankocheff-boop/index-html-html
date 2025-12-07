@@ -8,7 +8,7 @@ This repository contains multilingual HTML forms and interactive menus for Veran
 
 - `index.html` - Main contact form with language toggle (ES/EN)
 - `HTML-MENU.html` - Interactive restaurant menu with TailwindCSS
-- `README.md` - Main entry form for guest information
+- `README.md` - Guest information form for Verano Estate with TailwindCSS
 - `.github/workflows/` - GitHub Actions workflow files
 
 ## Coding Standards
@@ -99,7 +99,7 @@ This repository contains multilingual HTML forms and interactive menus for Veran
 - Support keyboard navigation for forms
 
 ## File Naming Conventions
-- Use lowercase with hyphens for HTML files (e.g., `HTML-MENU.html`)
+- File names may use uppercase letters with hyphens (e.g., `HTML-MENU.html`)
 - Keep file names descriptive and self-documenting
 - Use `.html` extension for all HTML files
 
