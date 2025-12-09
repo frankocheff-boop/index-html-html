@@ -12,11 +12,13 @@ This repository contains HTML-based web forms and interactive interfaces for **V
 
 ## Repository Structure
 
-- `index.html` - Main guest information form with language toggle
-- `README.md` - Detailed form HTML (appears to be a complete guest form)
+- `index.html` - Main guest information form with language toggle (simplified version)
+- `README.md` - Contains the complete guest form HTML implementation (note: unconventional use of README file)
 - `HTML-MENU.html` - Interactive menu display system
 - `untitled-1.html` - Wedding event planning dashboard
 - `.github/workflows/` - GitHub Actions workflows
+
+**Note**: The README.md file unusually contains form HTML rather than documentation.
 
 ## Technology Stack
 
@@ -36,8 +38,10 @@ This repository contains HTML-based web forms and interactive interfaces for **V
 ### CSS Styling
 - Use Tailwind CSS utility classes as the primary styling method
 - Define custom CSS variables in `:root` for brand colors:
-  - Primary brand color (teal): `#003C3C` or `--brand-teal`
-  - Background: `#FBF7F0` or `--brand-bg`
+  - Primary brand color (teal): `#003C3C` or `--brand-teal` (README.md forms)
+  - Accent blue: `#2b6cb0` or `--accent` (index.html)
+  - Background: `#FBF7F0` or `--brand-bg` (README.md forms), `#f6f7fb` or `--bg` (index.html)
+  - **Note**: Color schemes vary between files; use consistent colors within each file
 - Use inline `<style>` tags for custom CSS
 - Maintain responsive design with mobile-first approach
 
@@ -110,9 +114,10 @@ This repository contains HTML-based web forms and interactive interfaces for **V
 - Follow the established color scheme and spacing
 
 ## File Naming
-- Use lowercase with hyphens for HTML files (kebab-case)
+- HTML files use mixed conventions in this repository (e.g., `HTML-MENU.html`, `untitled-1.html`)
+- For **new files**, prefer lowercase with hyphens (kebab-case)
 - Keep file names descriptive but concise
-- Avoid special characters except hyphens
+- Avoid special characters except hyphens and numbers
 
 ## Testing
 - Test all forms in both Spanish and English
