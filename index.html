@@ -1,186 +1,903 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title data-i18n="title">Formulario</title>
-  <style>
-    :root{
-      --bg:#f6f7fb;
-      --card:#fff;
-      --accent:#2b6cb0;
-      --text:#222;
-    }
-    body{
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background:var(--bg);
-      color:var(--text);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:100vh;
-      margin:0;
-    }
-    .card{
-      background:var(--card);
-      padding:24px;
-      border-radius:8px;
-      box-shadow:0 6px 20px rgba(30,30,30,0.08);
-      width:320px;
-    }
-    .top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:12px;
-    }
-    .lang-box{
-      width:40px;
-      height:28px;
-      border-radius:6px;
-      border:1px solid rgba(0,0,0,0.08);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      user-select:none;
-      background:#fff;
-      font-weight:600;
-      color:var(--accent);
-      box-shadow:0 1px 3px rgba(0,0,0,0.06);
-    }
-    label{display:block;font-size:13px;margin-bottom:4px}
-    input[type="text"], input[type="email"], textarea{
-      width:100%;
-      padding:8px 10px;
-      border-radius:6px;
-      border:1px solid #dcdfe6;
-      margin-bottom:12px;
-      box-sizing:border-box;
-      font-size:14px;
-    }
-    button[type="submit"]{
-      width:100%;
-      background:var(--accent);
-      color:#fff;
-      padding:10px;
-      border:0;
-      border-radius:6px;
-      font-weight:600;
-      cursor:pointer;
-    }
-    .small{
-      font-size:12px;
-      color:#666;
-      margin-top:8px;
-      text-align:center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verano Estate - Guest Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+
+        :root {
+            --brand-teal: #003C3C;
+            --brand-bg: #FBF7F0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--brand-bg);
+            color: #333;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--brand-teal);
+        }
+
+        /* Estilos del Formulario */
+        .form-section {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+        }
+
+        .input-field {
+            font-family: 'Montserrat', sans-serif;
+            border: 1px solid #D1D5DB;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .input-field:focus {
+            border-color: var(--brand-teal);
+            box-shadow: 0 0 0 2px rgba(0, 60, 60, 0.2);
+            outline: none;
+        }
+
+        /* Botones */
+        .btn {
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.2s ease-in-out;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background-color: var(--brand-teal);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #002a2a;
+        }
+
+        .btn-secondary {
+            background-color: #4c7c7c;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #3d6363;
+        }
+
+        .btn-tertiary {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-tertiary:hover {
+            background-color: #d1d5db;
+        }
+
+        #roomAssignmentTable tbody tr:nth-child(odd) {
+            background-color: #f9fafb;
+        }
+
+        /* Estilos para el selector de idiomas FLOTANTE */
+        .lang-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px;
+            border-radius: 50px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .lang-btn {
+            border: 1px solid var(--brand-teal);
+            color: var(--brand-teal);
+            background: transparent;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn:hover {
+            background-color: #e5e7eb;
+        }
+
+        .lang-btn.active {
+            background-color: var(--brand-teal);
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
-<body>
-  <main class="card" role="main">
-    <div class="top">
-      <h2 style="margin:0" data-i18n="form_title">Contacto</h2>
-      <!-- "cuadrito" que cambia el idioma al hacer clic -->
-      <div id="langToggle" class="lang-box" role="button" aria-label="Cambiar idioma" title="Cambiar idioma">ES</div>
+
+<body class="antialiased pb-20">
+
+    <div class="lang-container">
+        <button onclick="setLanguage('es')" id="btn-es" class="lang-btn active">🇪🇸 ES</button>
+        <button onclick="setLanguage('en')" id="btn-en" class="lang-btn">🇺🇸 EN</button>
+        <button onclick="setLanguage('fr')" id="btn-fr" class="lang-btn">🇫🇷 FR</button>
     </div>
 
-    <form id="contactForm" action="#" onsubmit="event.preventDefault(); alert('Enviado');">
-      <label for="name" data-i18n="label_name">Nombre</label>
-      <input id="name" name="name" type="text" data-i18n="ph_name" placeholder="Tu nombre">
+    <header class="text-center py-10 px-4">
+        <p class="text-xl sm:text-2xl tracking-widest text-[var(--brand-teal)] mt-4 font-semibold">VERANO ESTATE</p>
+        <h1 class="text-3xl sm:text-4xl mt-2" data-i18n="formTitle">Formulario de Información de Huéspedes</h1>
+        <p class="text-sm text-gray-500 mt-2">by Chef Franko</p>
+    </header>
 
-      <label for="email" data-i18n="label_email">Correo</label>
-      <input id="email" name="email" type="email" data-i18n="ph_email" placeholder="tu@ejemplo.com">
+    <div class="max-w-md mx-auto my-8 px-4">
+        <img src="https://i.imgur.com/1CQ3BSd.png" alt="Información de WiFi" class="w-full h-auto rounded-lg shadow-md">
+    </div>
 
-      <label for="message" data-i18n="label_message">Mensaje</label>
-      <textarea id="message" name="message" rows="4" data-i18n="ph_message" placeholder="Escribe tu mensaje"></textarea>
+    <div id="statusMessage" class="hidden fixed top-24 right-5 z-50 transition-transform transform translate-x-full">
+        <div id="statusMessageContent" class="max-w-sm rounded-lg shadow-2xl p-4 text-white flex items-center">
+            <span id="statusMessageIcon" class="mr-3"></span>
+            <p id="statusMessageText" class="flex-grow"></p>
+        </div>
+    </div>
 
-      <button type="submit" id="submitBtn" data-i18n="btn_send">Enviar</button>
-    </form>
+    <main class="max-w-6xl mx-auto px-6 pb-12">
+        <form id="guestForm" action="https://formspree.io/f/xvgqddpg" method="POST">
 
-    <div class="small" style="margin-top:10px" data-i18n="help_text">Haz clic en el cuadrito para cambiar el idioma.</div>
-  </main>
+            <section class="form-section rounded-lg p-6 mb-8 shadow-md">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <span
+                        class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">1</span>
+                    <span data-i18n="basicInfo">Información Básica</span>
+                </h2>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div>
+                        <label for="group_name" class="block text-sm font-medium text-gray-700 mb-2"
+                            data-i18n="groupName">Nombre del Grupo</label>
+                        <input type="text" id="group_name" name="group_name"
+                            class="w-full px-4 py-3 rounded-lg input-field" required>
+                    </div>
+                    <div>
+                        <label for="contact_leader" class="block text-sm font-medium text-gray-700 mb-2"
+                            data-i18n="contactLeader">Contacto/Líder</label>
+                        <input type="text" id="contact_leader" name="contact_leader"
+                            class="w-full px-4 py-3 rounded-lg input-field" required>
+                    </div>
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-2"
+                            data-i18n="phone">Teléfono</label>
+                        <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 rounded-lg input-field"
+                            required>
+                    </div>
+                </div>
+            </section>
 
-  <script>
-    // Mapa de traducciones
-    const translations = {
-      es: {
-        title: "Formulario",
-        form_title: "Contacto",
-        label_name: "Nombre",
-        ph_name: "Tu nombre",
-        label_email: "Correo",
-        ph_email: "tu@ejemplo.com",
-        label_message: "Mensaje",
-        ph_message: "Escribe tu mensaje",
-        btn_send: "Enviar",
-        help_text: "Haz clic en el cuadrito para cambiar el idioma."
-      },
-      en: {
-        title: "Form",
-        form_title: "Contact",
-        label_name: "Name",
-        ph_name: "Your name",
-        label_email: "Email",
-        ph_email: "you@example.com",
-        label_message: "Message",
-        ph_message: "Write your message",
-        btn_send: "Send",
-        help_text: "Click the square to change the language."
-      }
-      // Puedes añadir más idiomas aquí (fr, pt, ...)
-    };
+            <section class="form-section rounded-lg p-6 mb-8 shadow-md">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <span
+                        class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">2</span>
+                    <span data-i18n="transportTitle">Transporte del Aeropuerto</span>
+                </h2>
+                <div class="space-y-3">
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer">
+                        <input type="radio" name="transportation" value="vip_roundtrip"
+                            class="mr-3 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]">
+                        <span data-i18n="transVipRound">VIP SUV Transfer: Viaje redondo</span>
+                    </label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer">
+                        <input type="radio" name="transportation" value="vip_arrival"
+                            class="mr-3 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]">
+                        <span data-i18n="transVipArr">Solo llegada</span>
+                    </label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer">
+                        <input type="radio" name="transportation" value="vip_departure"
+                            class="mr-3 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]">
+                        <span data-i18n="transVipDep">Solo salida</span>
+                    </label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer">
+                        <input type="radio" name="transportation" value="taxi"
+                            class="mr-3 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]">
+                        <span data-i18n="transTaxi">Taxi por su cuenta</span>
+                    </label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer">
+                        <input type="radio" name="transportation" value="other"
+                            class="mr-3 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]">
+                        <span data-i18n="transOther">Otro</span>
+                    </label>
+                </div>
+            </section>
 
-    // Elemento del cuadrito
-    const langToggle = document.getElementById('langToggle');
+            <section class="form-section rounded-lg p-6 mb-8 shadow-md">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <span
+                        class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">3</span>
+                    <span data-i18n="stayTitle">Información de Estadía y Habitaciones</span>
+                </h2>
 
-    // Obtener idioma guardado o por defecto
-    const defaultLang = localStorage.getItem('lang') || navigator.language?.slice(0,2) || 'es';
-    let currentLang = (defaultLang in translations) ? defaultLang : 'es';
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 border-b pb-6">
+                    <div>
+                        <label for="main_arrival_date" class="block text-sm font-medium text-gray-700 mb-2"
+                            data-i18n="arrivalDate">Fecha Principal de Llegada</label>
+                        <input type="date" id="main_arrival_date" name="main_arrival_date"
+                            class="w-full px-4 py-3 rounded-lg input-field" required>
+                    </div>
+                    <div>
+                        <label for="main_departure_date" class="block text-sm font-medium text-gray-700 mb-2"
+                            data-i18n="departureDate">Fecha Principal de Salida</label>
+                        <input type="date" id="main_departure_date" name="main_departure_date"
+                            class="w-full px-4 py-3 rounded-lg input-field" required>
+                    </div>
+                </div>
 
-    // función que aplica traducción
-    function applyTranslations(lang) {
-      // Títulos <title> y otros que usan data-i18n
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (!key) return;
-        const text = translations[lang] && translations[lang][key];
-        if (typeof text === 'undefined') return;
+                <div class="grid md:grid-cols-3 gap-6 mb-6">
+                    <div>
+                        <label for="rooms_reserved" class="block text-sm font-medium text-gray-700 mb-2"
+                            data-i18n="roomsReserved">Habitaciones reservadas</label>
+                        <input type="number" id="rooms_reserved" name="rooms_reserved"
+                            class="w-full px-4 py-3 rounded-lg input-field" min="1" max="11">
+                    </div>
+                    <div>
+                        <label for="total_adults" class="block text-sm font-medium text-gray-700 mb-2"
+                            data-i18n="totalAdults">Total de Adultos</label>
+                        <input type="number" id="total_adults" name="total_adults"
+                            class="w-full px-4 py-3 rounded-lg input-field" min="1">
+                    </div>
+                    <div>
+                        <label for="children_ages" class="block text-sm font-medium text-gray-700 mb-2"
+                            data-i18n="children">Niños (edades)</label>
+                        <input type="text" id="children_ages" name="children_ages"
+                            class="w-full px-4 py-3 rounded-lg input-field">
+                    </div>
+                </div>
 
-        // Algunos elementos deberían usar placeholder en vez de textContent
-        const tag = el.tagName.toLowerCase();
-        if (tag === 'input' || tag === 'textarea') {
-          el.placeholder = text;
-        } else if (tag === 'title') {
-          document.title = text;
-        } else {
-          el.textContent = text;
+                <div class="mb-6">
+                    <p class="text-sm font-medium text-gray-700 mb-3" data-i18n="preAssignQuestion">¿Prefiere
+                        pre-asignar habitaciones y registrar llegadas individuales?</p>
+                    <div class="flex space-x-6">
+                        <label class="flex items-center"><input type="radio" name="preassign_rooms" value="yes"
+                                class="mr-2 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]"
+                                onchange="toggleRoomAssignment(true)"><span data-i18n="yes">SÍ</span></label>
+                        <label class="flex items-center"><input type="radio" name="preassign_rooms" value="no"
+                                class="mr-2 text-[var(--brand-teal)] focus:ring-[var(--brand-teal)]"
+                                onchange="toggleRoomAssignment(false)" checked><span data-i18n="no">NO</span></label>
+                    </div>
+                </div>
+
+                <div id="roomAssignment" class="hidden">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4" data-i18n="individualReg">Registro Individual</h3>
+                    <div class="overflow-x-auto rounded-lg border border-gray-200">
+                        <table id="roomAssignmentTable" class="w-full">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        data-i18n="thRoom">Hab.#</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        data-i18n="thGuest">Huésped</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        data-i18n="thArrival">Llegada</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        data-i18n="thDeparture">Salida</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="form-section rounded-lg p-6 mb-8 shadow-md">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <span
+                        class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">4</span>
+                    <span data-i18n="servicesTitle">Servicios Adicionales</span>
+                </h2>
+                <div class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-sm font-medium text-gray-700 mb-3" data-i18n="sundayFood">¿Servicio de Comida
+                                Domingos?</p>
+                            <div class="flex space-x-6">
+                                <label class="flex items-center"><input type="radio" name="sunday_meal_service"
+                                        value="yes" class="mr-2 text-[var(--brand-teal)]"><span data-i18n="yesCost">SÍ
+                                        (con costo)</span></label>
+                                <label class="flex items-center"><input type="radio" name="sunday_meal_service"
+                                        value="no" class="mr-2 text-[var(--brand-teal)]"><span
+                                        data-i18n="no">NO</span></label>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-700 mb-3" data-i18n="sundayMaid">¿Servicio de
+                                Limpieza Domingos?</p>
+                            <div class="flex space-x-6">
+                                <label class="flex items-center"><input type="radio" name="sunday_maid_service"
+                                        value="yes" class="mr-2 text-[var(--brand-teal)]"><span data-i18n="yesCost">SÍ
+                                        (con costo)</span></label>
+                                <label class="flex items-center"><input type="radio" name="sunday_maid_service"
+                                        value="no" class="mr-2 text-[var(--brand-teal)]"><span
+                                        data-i18n="no">NO</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="special_requests" class="block text-sm font-medium text-gray-700 mb-2"
+                            data-i18n="specialReq">¿Solicitudes especiales?</label>
+                        <textarea id="special_requests" name="special_requests" rows="3"
+                            class="w-full px-4 py-3 rounded-lg input-field"></textarea>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="special_occasion" class="block text-sm font-medium text-gray-700 mb-2"
+                                data-i18n="specialOccasion">¿Ocasión especial?</label>
+                            <input type="text" id="special_occasion" name="special_occasion"
+                                class="w-full px-4 py-3 rounded-lg input-field">
+                        </div>
+                        <div>
+                            <label for="occasion_date" class="block text-sm font-medium text-gray-700 mb-2"
+                                data-i18n="occasionDate">Fecha del evento</label>
+                            <input type="date" id="occasion_date" name="occasion_date"
+                                class="w-full px-4 py-3 rounded-lg input-field">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="form-section rounded-lg p-6 mb-8 shadow-md">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <span
+                        class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">5</span>
+                    <span data-i18n="activitiesTitle">Actividades Especiales</span>
+                </h2>
+                <p class="text-sm text-gray-600 mb-4" data-i18n="activitiesDesc">Marque si desea información o
+                    pre-reservar:</p>
+                <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input
+                            type="checkbox" name="activities" value="flowers"
+                            class="mr-2 text-[var(--brand-teal)]"><span data-i18n="actFlowers">Flores</span></label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input
+                            type="checkbox" name="activities" value="mariachi"
+                            class="mr-2 text-[var(--brand-teal)]"><span data-i18n="actMariachi">Mariachi</span></label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input
+                            type="checkbox" name="activities" value="atv" class="mr-2 text-[var(--brand-teal)]"><span
+                            data-i18n="actAtv">Tour ATV</span></label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input
+                            type="checkbox" name="activities" value="city_tour"
+                            class="mr-2 text-[var(--brand-teal)]"><span data-i18n="actCity">Tour Ciudad</span></label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input
+                            type="checkbox" name="activities" value="zipline"
+                            class="mr-2 text-[var(--brand-teal)]"><span data-i18n="actZipline">Tirolesa</span></label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input
+                            type="checkbox" name="activities" value="yoga" class="mr-2 text-[var(--brand-teal)]"><span
+                            data-i18n="actYoga">Yoga</span></label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input
+                            type="checkbox" name="activities" value="salsa" class="mr-2 text-[var(--brand-teal)]"><span
+                            data-i18n="actSalsa">Salsa</span></label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input
+                            type="checkbox" name="activities" value="yacht" class="mr-2 text-[var(--brand-teal)]"><span
+                            data-i18n="actYacht">Yate Privado</span></label>
+                    <label class="flex items-center p-2 rounded-md hover:bg-gray-50 cursor-pointer"><input
+                            type="checkbox" name="activities" value="spa" class="mr-2 text-[var(--brand-teal)]"><span
+                            data-i18n="actSpa">SPA / Masajes</span></label>
+                </div>
+            </section>
+
+            <section class="form-section rounded-lg p-6 mb-8 shadow-md">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <span
+                        class="bg-[var(--brand-teal)] text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm flex-shrink-0 font-sans">6</span>
+                    <span data-i18n="provTitle">Provisiones y Bebidas</span>
+                </h2>
+                <p class="text-sm text-gray-600 mb-6" data-i18n="provDesc">Costo de artículos + servicio se agrega a su
+                    cuenta.</p>
+
+                <div id="provisionListContainer" class="space-y-8">
+                </div>
+
+                <div class="mt-8">
+                    <label for="additional_info" class="block text-sm font-medium text-gray-700 mb-2"
+                        data-i18n="dietary">Información adicional o dietética:</label>
+                    <textarea id="additional_info" name="additional_info" rows="4"
+                        class="w-full px-4 py-3 rounded-lg input-field"></textarea>
+                </div>
+            </section>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                <button type="submit"
+                    class="btn btn-primary font-semibold py-4 px-8 rounded-lg shadow-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                        </path>
+                    </svg>
+                    <span data-i18n="btnSend">Enviar Formulario</span>
+                </button>
+                <button type="button" onclick="sendToWhatsApp()"
+                    class="btn btn-secondary font-semibold py-4 px-8 rounded-lg shadow-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.63z" />
+                    </svg>
+                    <span data-i18n="btnWhatsapp">Enviar por WhatsApp</span>
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <footer class="bg-[var(--brand-teal)] text-white py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <p class="font-bold text-lg tracking-wide">VERANO STATE by chef franko</p>
+            <div class="text-gray-300 space-y-1 mt-4">
+                <p>+52 322 160 6843</p>
+                <p>franko@veranostate.com</p>
+            </div>
+            <div class="mt-6 border-t border-gray-700 pt-6">
+                <p class="text-sm text-gray-400">&copy; 2025 VERANO STATE.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. CONFIGURACIÓN DE TRADUCCIONES ---
+        const translations = {
+            es: {
+                formTitle: "Formulario de Información de Huéspedes",
+                basicInfo: "Información Básica",
+                groupName: "Nombre del Grupo",
+                contactLeader: "Contacto/Líder",
+                phone: "Teléfono",
+                transportTitle: "Transporte del Aeropuerto",
+                transVipRound: "VIP SUV Transfer: Viaje redondo",
+                transVipArr: "Solo llegada",
+                transVipDep: "Solo salida",
+                transTaxi: "Taxi por su cuenta",
+                transOther: "Otro",
+                stayTitle: "Estadía y Habitaciones",
+                arrivalDate: "Fecha Principal de Llegada",
+                departureDate: "Fecha Principal de Salida",
+                roomsReserved: "Habitaciones reservadas",
+                totalAdults: "Total de Adultos",
+                children: "Niños (edades)",
+                preAssignQuestion: "¿Prefiere pre-asignar habitaciones y registrar llegadas individuales?",
+                yes: "SÍ",
+                no: "NO",
+                individualReg: "Registro Individual de Huéspedes",
+                thRoom: "Hab.#", thGuest: "Huésped", thArrival: "Llegada", thDeparture: "Salida",
+                servicesTitle: "Servicios Adicionales",
+                sundayFood: "¿Le gustaría Servicio de Comida los Domingos?",
+                sundayMaid: "¿Le gustaría Servicio de Limpieza los Domingos?",
+                yesCost: "SÍ (costos adicionales aplican)",
+                specialReq: "¿Alguna solicitud especial al llegar?",
+                specialOccasion: "¿Alguien celebrando una ocasión especial?",
+                occasionDate: "Fecha del evento",
+                activitiesTitle: "Servicios y Actividades Especiales",
+                activitiesDesc: "Marque si desea información o pre-reservar:",
+                actFlowers: "Flores", actMariachi: "Mariachi", actAtv: "Tour ATV",
+                actCity: "Tour Ciudad", actZipline: "Tirolesa", actYoga: "Yoga",
+                actSalsa: "Salsa", actYacht: "Yate Privado", actSpa: "SPA / Masajes",
+                provTitle: "Provisiones y Bebidas",
+                provDesc: "Costo de artículos + servicio se agregará a su factura.",
+                dietary: "Información adicional o dietética:",
+                btnSend: "Enviar Formulario",
+                btnWhatsapp: "Enviar por WhatsApp"
+            },
+            en: {
+                formTitle: "Guest Information Form",
+                basicInfo: "Basic Information",
+                groupName: "Group Name",
+                contactLeader: "Contact/Leader",
+                phone: "Phone Number",
+                transportTitle: "Airport Transportation",
+                transVipRound: "VIP SUV Transfer: Round Trip",
+                transVipArr: "Arrival Only",
+                transVipDep: "Departure Only",
+                transTaxi: "Taxi on your own",
+                transOther: "Other",
+                stayTitle: "Stay & Rooms",
+                arrivalDate: "Main Arrival Date",
+                departureDate: "Main Departure Date",
+                roomsReserved: "Rooms Reserved",
+                totalAdults: "Total Adults",
+                children: "Children (ages)",
+                preAssignQuestion: "Do you prefer to pre-assign rooms and register individual arrivals?",
+                yes: "YES",
+                no: "NO",
+                individualReg: "Individual Guest Registration",
+                thRoom: "Room #", thGuest: "Guest Name", thArrival: "Arrival", thDeparture: "Departure",
+                servicesTitle: "Additional Services",
+                sundayFood: "Would you like Sunday Meal Service?",
+                sundayMaid: "Would you like Sunday Maid Service?",
+                yesCost: "YES (additional costs apply)",
+                specialReq: "Any special requests upon arrival?",
+                specialOccasion: "Anyone celebrating a special occasion?",
+                occasionDate: "Date of event",
+                activitiesTitle: "Special Services & Activities",
+                activitiesDesc: "Check if you want info or to book:",
+                actFlowers: "Flowers", actMariachi: "Mariachi Band", actAtv: "ATV Tour",
+                actCity: "City Tour", actZipline: "Zipline", actYoga: "Yoga Class",
+                actSalsa: "Salsa Lesson", actYacht: "Private Yacht", actSpa: "SPA / Massage",
+                provTitle: "Provisions & Beverages",
+                provDesc: "Cost of items + service fee will be added to your bill.",
+                dietary: "Additional info or Dietary Restrictions:",
+                btnSend: "Submit Form",
+                btnWhatsapp: "Send via WhatsApp"
+            },
+            fr: {
+                formTitle: "Formulaire d'Information des Invités",
+                basicInfo: "Informations de Base",
+                groupName: "Nom du Groupe",
+                contactLeader: "Contact/Leader",
+                phone: "Téléphone",
+                transportTitle: "Transport Aéroport",
+                transVipRound: "Transfert VIP SUV : Aller-retour",
+                transVipArr: "Arrivée seulement",
+                transVipDep: "Départ seulement",
+                transTaxi: "Taxi par vos propres moyens",
+                transOther: "Autre",
+                stayTitle: "Séjour et Chambres",
+                arrivalDate: "Date d'arrivée principale",
+                departureDate: "Date de départ principale",
+                roomsReserved: "Chambres réservées",
+                totalAdults: "Adultes",
+                children: "Enfants (âges)",
+                preAssignQuestion: "Préférez-vous pré-assigner les chambres ?",
+                yes: "OUI",
+                no: "NON",
+                individualReg: "Enregistrement Individuel",
+                thRoom: "Ch.#", thGuest: "Invité", thArrival: "Arrivée", thDeparture: "Départ",
+                servicesTitle: "Services Supplémentaires",
+                sundayFood: "Souhaitez-vous un service de repas le dimanche ?",
+                sundayMaid: "Souhaitez-vous un service de ménage le dimanche ?",
+                yesCost: "OUI (frais supplémentaires)",
+                specialReq: "Demandes spéciales à l'arrivée ?",
+                specialOccasion: "Occasion spéciale ?",
+                occasionDate: "Date de l'événement",
+                activitiesTitle: "Activités Spéciales",
+                activitiesDesc: "Cochez pour infos ou réserver :",
+                actFlowers: "Fleurs", actMariachi: "Mariachi", actAtv: "Tour VTT",
+                actCity: "Tour de ville", actZipline: "Tyrolienne", actYoga: "Yoga",
+                actSalsa: "Salsa", actYacht: "Yacht Privé", actSpa: "SPA / Massage",
+                provTitle: "Provisions et Boissons",
+                provDesc: "Coût des articles + frais de service ajoutés à la facture.",
+                dietary: "Infos supplémentaires ou régime alimentaire :",
+                btnSend: "Envoyer le formulaire",
+                btnWhatsapp: "Envoyer par WhatsApp"
+            }
+        };
+
+        // --- 2. DATOS DE HABITACIONES Y PROVISIONES ---
+        const roomData = [
+            { number: 1, type: "King Bed" }, { number: 2, type: "2 Queen Beds" },
+            { number: 3, type: "2 Queen Beds" }, { number: 4, type: "King Bed" },
+            { number: 5, type: "2 Queen Beds" }, { number: 6, type: "2 Queen Beds" },
+            { number: 7, type: "2 Queen Beds" }, { number: 8, type: "2 Queen Beds" },
+            { number: 9, type: "King Bed" }, { number: 10, type: "2 Queen Beds" },
+            { number: 11, type: "King Bed" }
+        ];
+
+        const provisionData = [
+            {
+                category: 'Alcohol / Bebidas',
+                items: [
+                    { name: 'Cerveza' }, { name: 'Tequila' }, { name: 'Vodka' }, { name: 'Whiskey' },
+                    { name: 'Ron' }, { name: 'Vino Tinto' }, { name: 'Vino Blanco' }
+                ]
+            },
+            {
+                category: 'Snacks & Soft Drinks',
+                items: [
+                    { name: 'Agua / Water' }, { name: 'Refrescos / Soda' }, { name: 'Jugo / Juice' },
+                    { name: 'Frutas / Fruit' }, { name: 'Café / Coffee' }, { name: 'Leche / Milk' }
+                ]
+            }
+        ];
+
+        // --- 3. LÓGICA PRINCIPAL (AL CARGAR) ---
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Generar tabla de habitaciones
+            const roomTableBody = document.querySelector('#roomAssignmentTable tbody');
+            roomData.forEach(room => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-4 py-3 border-t border-gray-200 align-top text-sm">
+                        <span class="font-semibold text-[var(--brand-teal)]">${room.number}</span>
+                        <p class="text-xs text-gray-500">${room.type}</p>
+                    </td>
+                    <td class="px-4 py-3 border-t border-gray-200 align-top">
+                        <input type="text" name="room_${room.number}_guest" class="w-full text-sm p-2 border border-gray-200 rounded-md bg-transparent">
+                    </td>
+                    <td class="px-4 py-3 border-t border-gray-200 align-top">
+                        <input type="date" name="room_${room.number}_arrival_date" class="block w-full text-sm p-2 border border-gray-200 rounded-md mb-1">
+                        <input type="text" name="room_${room.number}_arrival_flight" placeholder="Flight Info" class="block w-full text-sm p-2 border border-gray-200 rounded-md">
+                    </td>
+                    <td class="px-4 py-3 border-t border-gray-200 align-top">
+                        <input type="date" name="room_${room.number}_departure_date" class="block w-full text-sm p-2 border border-gray-200 rounded-md mb-1">
+                        <input type="text" name="room_${room.number}_departure_flight" placeholder="Flight Info" class="block w-full text-sm p-2 border border-gray-200 rounded-md">
+                    </td>
+                `;
+                roomTableBody.appendChild(row);
+            });
+
+            // Generar lista de provisiones
+            const provContainer = document.getElementById('provisionListContainer');
+            provisionData.forEach(cat => {
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = `<h3 class="text-lg font-bold text-gray-700 mb-3 border-b pb-2">${cat.category}</h3>`;
+                const grid = document.createElement('div');
+                grid.className = 'grid md:grid-cols-2 gap-4';
+
+                cat.items.forEach(item => {
+                    const id = item.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                    grid.innerHTML += `
+                        <div class="flex items-center gap-3 bg-gray-50 p-3 rounded">
+                            <span class="text-sm font-medium w-1/3">${item.name}</span>
+                            <input type="text" name="${id}_qty" placeholder="Cant." class="w-1/3 text-sm p-2 border rounded">
+                            <input type="text" name="${id}_brand" placeholder="Marca/Brand" class="w-1/3 text-sm p-2 border rounded">
+                        </div>`;
+                });
+                wrapper.appendChild(grid);
+                provContainer.appendChild(wrapper);
+            });
+
+            // Manejo del Envío del Formulario
+            document.getElementById('guestForm').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const btn = e.target.querySelector('button[type="submit"] span');
+                const originalText = btn.textContent;
+                btn.textContent = 'Enviando...';
+
+                try {
+                    const response = await fetch(e.target.action, {
+                        method: 'POST',
+                        body: new FormData(e.target),
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    if (response.ok) {
+                        showStatus('¡Enviado con éxito! / Sent Successfully!');
+                        e.target.reset();
+                        window.scrollTo(0, 0);
+                    } else {
+                        showStatus('Error al enviar / Error sending', true);
+                    }
+                } catch (err) {
+                    showStatus('Error de conexión', true);
+                } finally {
+                    btn.textContent = originalText;
+                }
+            });
+        });
+
+        // --- 4. FUNCIONES GLOBALES ---
+
+        function setLanguage(lang) {
+            // Actualizar textos
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = translations[lang][key];
+                    } else {
+                        el.innerText = translations[lang][key];
+                    }
+                }
+            });
+            // Actualizar botones
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
         }
-      });
 
-      // Actualiza el cuadrito con el código de idioma en mayúsculas
-      langToggle.textContent = lang.toUpperCase();
-      // Guardar preferencia
-      localStorage.setItem('lang', lang);
-      currentLang = lang;
-    }
+        function toggleRoomAssignment(show) {
+            document.getElementById('roomAssignment').classList.toggle('hidden', !show);
+        }
 
-    // Toggle simple: alterna entre los idiomas disponibles en el objeto translations
-    function cycleLanguage() {
-      const keys = Object.keys(translations);
-      const idx = keys.indexOf(currentLang);
-      const next = keys[(idx + 1) % keys.length];
-      applyTranslations(next);
-    }
+        function showStatus(msg, isError = false) {
+            const box = document.getElementById('statusMessage');
+            document.getElementById('statusMessageText').innerText = msg;
+            document.getElementById('statusMessageContent').className = `max-w-sm rounded-lg shadow-2xl p-4 text-white flex items-center ${isError ? 'bg-red-600' : 'bg-green-600'}`;
+            box.classList.remove('hidden');
+            setTimeout(() => box.classList.remove('translate-x-full'), 10);
+            setTimeout(() => box.classList.add('translate-x-full'), 4000);
+        }
 
-    // Click en cuadrito cambia idioma
-    langToggle.addEventListener('click', cycleLanguage);
+        function sendToWhatsApp() {
+            const formData = new FormData(document.getElementById('guestForm'));
+            const get = (n) => formData.get(n) || '';
+            let msg = "*🌴 NUEVA RESERVA / NEW BOOKING 🌴*\n\n";
 
-    // Inicializar en la carga
-    applyTranslations(currentLang);
+            msg += `👤 *Group:* ${get('group_name')}\n`;
+            msg += `📞 *Contact:* ${get('contact_leader')} (${get('phone')})\n`;
+            msg += `🚗 *Transport:* ${get('transportation')}\n`;
+            msg += `📅 *Dates:* ${get('main_arrival_date')} to ${get('main_departure_date')}\n`;
+            msg += `👥 *Pax:* ${get('total_adults')} Adl, ${get('children_ages')} Chd\n\n`;
 
-    // Ejemplo: también soporta cambiar manualmente a un idioma, p.ej:
-    // applyTranslations('en');
-  </script>
+            // Actividades
+            const acts = formData.getAll('activities');
+            if (acts.length > 0) msg += `✨ *Activities:* ${acts.join(', ')}\n`;
+
+            // Solicitudes especiales
+            if (get('special_requests')) msg += `📝 *Req:* ${get('special_requests')}\n`;
+            if (get('additional_info')) msg += `🚫 *Dietary:* ${get('additional_info')}\n`;
+
+            const phone = "523221606843";
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+    </script>
 </body>
-</html>
+
+</html># publish-ghpages.ps1
+# Ejecutar desde la carpeta con Untitled-1.html
+
+# Lectura interactiva de variables
+$defaultRepo = 'pos-crema'
+$repoName = Read-Host "Nombre del repo en GitHub (enter = $defaultRepo)"
+if ([string]::IsNullOrWhiteSpace($repoName)) { $repoName = $defaultRepo }
+
+$githubUser = Read-Host "Tu nombre de usuario en GitHub (ej: aaron). Se usará para mostrar la URL"
+$gitUserEmail = Read-Host "Email para git (enter para omitir)"
+
+$visibility = Read-Host "Visibilidad del repo: 'public' o 'private' (enter = public)"
+if ([string]::IsNullOrWhiteSpace($visibility)) { $visibility = 'public' }
+
+# Configurar git user (opcional)
+if (-not [string]::IsNullOrWhiteSpace($gitUserEmail)) {
+    git config --global user.email $gitUserEmail
+    if (-not (git config --global user.name)) { git config --global user.name $env:USERNAME }
+}
+
+# Iniciar repo si hace falta
+if (-not (Test-Path .git)) {
+    git init
+}
+
+# Asegurarse de que el archivo existe
+if (-not (Test-Path 'Untitled-1.html')) {
+    Write-Error "No se encontró 'Untitled-1.html' en este directorio. Sitúate en la carpeta correcta y vuelve a ejecutar."
+    exit 1
+}
+
+# Añadir y commitear (sin modificar el contenido del archivo)
+git add 'Untitled-1.html'
+# Si no hay commits aún, hacer commit; si ya hay, crear commit solo si hay cambios
+try {
+    git commit -m "Add Untitled-1.html" -a
+} catch {
+    Write-Host "No hay cambios nuevos para commitear o ya existe un commit inicial."
+}
+
+# Comprobar gh
+$gh = Get-Command gh -ErrorAction SilentlyContinue
+if (-not $gh) {
+    Write-Host "`nLa CLI 'gh' no está instalada. Intentando instalar vía winget (requiere permisos)..." -ForegroundColor Yellow
+    try {
+        winget install --id GitHub.cli -e --source winget
+    } catch {
+        Write-Warning "No se pudo instalar 'gh' automáticamente. Instálala manualmente: https://github.com/cli/cli#installation"
+        exit 1
+    }
+}
+
+# Autenticación gh (interactiva)
+Write-Host "`nSe abrirá el flujo de autenticación de GitHub (gh auth login). Sigue las instrucciones." -ForegroundColor Cyan
+gh auth login
+
+# Crear el repo en GitHub y subir (usa --source=. --push para subir todo)
+Write-Host "`nCreando repositorio remoto y haciendo push..." -ForegroundColor Cyan
+gh repo create $repoName --$visibility --source=. --remote=origin --push
+
+# Asegurar que hay una rama main (si no, crearla y pushear)
+$branch = (git rev-parse --abbrev-ref HEAD) 2>$null
+if ($branch -ne 'main') {
+    git branch -M main
+    git push -u origin main
+}
+
+# Crear/activar GitHub Pages desde la rama main (root)
+Write-Host "`nActivando GitHub Pages (publicación desde main / root)..." -ForegroundColor Cyan
+# Intentar usar gh pages create; si falla, informar y dar instrucciones
+try {
+    gh pages create --source main --branch main --path /
+} catch {
+    Write-Warning "No se pudo activar Pages automáticamente con 'gh'. Abre: https://github.com/$githubUser/$repoName/settings/pages y selecciona 'main' en Branch y '/' como folder."
+}
+
+# Mostrar URL pública (si el repo es tipo usuario-site, la URL raíz, si no, URL con repo y ruta al archivo)
+if ($repoName -ieq "$githubUser.github.io") {
+    $url = "https://$githubUser.github.io/"
+} else {
+    $url = "https://$githubUser.github.io/$repoName/Untitled-1.html"
+}
+
+Write-Host "`nHe terminado los pasos. Espera unos minutos y abre la URL:" -ForegroundColor Green
+Write-Host $url
+Write-Host "`nSi no aparece, revisa en GitHub: Settings → Pages o Actions → 'Pages build and deployment' para errores."# publish-ghpages.ps1
+# Ejecutar desde la carpeta con Untitled-1.html
+
+# Lectura interactiva de variables
+$defaultRepo = 'pos-crema'
+$repoName = Read-Host "Nombre del repo en GitHub (enter = $defaultRepo)"
+if ([string]::IsNullOrWhiteSpace($repoName)) { $repoName = $defaultRepo }
+
+$githubUser = Read-Host "Tu nombre de usuario en GitHub (ej: aaron). Se usará para mostrar la URL"
+$gitUserEmail = Read-Host "Email para git (enter para omitir)"
+
+$visibility = Read-Host "Visibilidad del repo: 'public' o 'private' (enter = public)"
+if ([string]::IsNullOrWhiteSpace($visibility)) { $visibility = 'public' }
+
+# Configurar git user (opcional)
+if (-not [string]::IsNullOrWhiteSpace($gitUserEmail)) {
+    git config --global user.email $gitUserEmail
+    if (-not (git config --global user.name)) { git config --global user.name $env:USERNAME }
+}
+
+# Iniciar repo si hace falta
+if (-not (Test-Path .git)) {
+    git init
+}
+
+# Asegurarse de que el archivo existe
+if (-not (Test-Path 'Untitled-1.html')) {
+    Write-Error "No se encontró 'Untitled-1.html' en este directorio. Sitúate en la carpeta correcta y vuelve a ejecutar."
+    exit 1
+}
+
+# Añadir y commitear (sin modificar el contenido del archivo)
+git add 'Untitled-1.html'
+# Si no hay commits aún, hacer commit; si ya hay, crear commit solo si hay cambios
+try {
+    git commit -m "Add Untitled-1.html" -a
+} catch {
+    Write-Host "No hay cambios nuevos para commitear o ya existe un commit inicial."
+}
+
+# Comprobar gh
+$gh = Get-Command gh -ErrorAction SilentlyContinue
+if (-not $gh) {
+    Write-Host "`nLa CLI 'gh' no está instalada. Intentando instalar vía winget (requiere permisos)..." -ForegroundColor Yellow
+    try {
+        winget install --id GitHub.cli -e --source winget
+    } catch {
+        Write-Warning "No se pudo instalar 'gh' automáticamente. Instálala manualmente: https://github.com/cli/cli#installation"
+        exit 1
+    }
+}
+
+# Autenticación gh (interactiva)
+Write-Host "`nSe abrirá el flujo de autenticación de GitHub (gh auth login). Sigue las instrucciones." -ForegroundColor Cyan
+gh auth login
+
+# Crear el repo en GitHub y subir (usa --source=. --push para subir todo)
+Write-Host "`nCreando repositorio remoto y haciendo push..." -ForegroundColor Cyan
+gh repo create $repoName --$visibility --source=. --remote=origin --push
+
+# Asegurar que hay una rama main (si no, crearla y pushear)
+$branch = (git rev-parse --abbrev-ref HEAD) 2>$null
+if ($branch -ne 'main') {
+    git branch -M main
+    git push -u origin main
+}
+
+# Crear/activar GitHub Pages desde la rama main (root)
+Write-Host "`nActivando GitHub Pages (publicación desde main / root)..." -ForegroundColor Cyan
+# Intentar usar gh pages create; si falla, informar y dar instrucciones
+try {
+    gh pages create --source main --branch main --path /
+} catch {
+    Write-Warning "No se pudo activar Pages automáticamente con 'gh'. Abre: https://github.com/$githubUser/$repoName/settings/pages y selecciona 'main' en Branch y '/' como folder."
+}
+
+# Mostrar URL pública (si el repo es tipo usuario-site, la URL raíz, si no, URL con repo y ruta al archivo)
+if ($repoName -ieq "$githubUser.github.io") {
+    $url = "https://$githubUser.github.io/"
+} else {
+    $url = "https://$githubUser.github.io/$repoName/Untitled-1.html"
+}
+
+Write-Host "`nHe terminado los pasos. Espera unos minutos y abre la URL:" -ForegroundColor Green
+Write-Host $url
+Write-Host "`nSi no aparece, revisa en GitHub: Settings → Pages o Actions → 'Pages build and deployment' para errores."
