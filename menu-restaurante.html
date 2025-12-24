@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú de Restaurante</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            color: #333;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .menu-section {
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .menu-item {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid #667eea;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .item-name {
+            font-size: 1.4em;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .item-price {
+            font-size: 1.3em;
+            color: #764ba2;
+            font-weight: bold;
+        }
+        
+        .item-description {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍽️ Nuestro Menú 🍽️</h1>
+            <p>Sabores auténticos para momentos especiales</p>
+        </div>
+        
+        <div class="menu-section">
+            <h2 class="section-title">🥗 Entradas</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Ensalada César</span>
+                        <span class="item-price">$12.99</span>
+                    </div>
+                    <p class="item-description">Lechuga romana fresca, crutones caseros, queso parmesano y nuestra salsa César especial</p>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Bruschetta</span>
+                        <span class="item-price">$10.99</span>
+                    </div>
+                    <p class="item-description">Pan tostado con tomate fresco, albahaca, ajo y aceite de oliva extra virgen</p>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Camarones al Ajillo</span>
+                        <span class="item-price">$15.99</span>
+                    </div>
+                    <p class="item-description">Camarones salteados en aceite de oliva con ajo, guindilla y perejil fresco</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <h2 class="section-title">🍝 Platos Principales</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Filete Mignon</span>
+                        <span class="item-price">$28.99</span>
+                    </div>
+                    <p class="item-description">Filete de res premium a la parrilla con salsa de vino tinto, papas gratinadas y vegetales de temporada</p>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Salmón a la Plancha</span>
+                        <span class="item-price">$24.99</span>
+                    </div>
+                    <p class="item-description">Salmón fresco con glaseado de miel y limón, acompañado de arroz salvaje y espárragos</p>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Pasta Carbonara</span>
+                        <span class="item-price">$18.99</span>
+                    </div>
+                    <p class="item-description">Pasta fresca con pancetta, huevo, queso pecorino y pimienta negra recién molida</p>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Pollo al Curry</span>
+                        <span class="item-price">$19.99</span>
+                    </div>
+                    <p class="item-description">Pechuga de pollo en salsa de curry cremosa con arroz basmati y naan casero</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <h2 class="section-title">🍰 Postres</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Tiramisú</span>
+                        <span class="item-price">$8.99</span>
+                    </div>
+                    <p class="item-description">Clásico postre italiano con café, mascarpone y cacao</p>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Cheesecake</span>
+                        <span class="item-price">$7.99</span>
+                    </div>
+                    <p class="item-description">Tarta de queso cremosa con base de galleta y coulis de frutos rojos</p>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Brownie con Helado</span>
+                        <span class="item-price">$9.99</span>
+                    </div>
+                    <p class="item-description">Brownie de chocolate tibio con helado de vainilla y salsa de caramelo</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="menu-section">
+            <h2 class="section-title">☕ Bebidas</h2>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Limonada Natural</span>
+                        <span class="item-price">$4.99</span>
+                    </div>
+                    <p class="item-description">Limonada fresca hecha con limones recién exprimidos y menta</p>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Café Expreso</span>
+                        <span class="item-price">$3.99</span>
+                    </div>
+                    <p class="item-description">Café de grano seleccionado preparado al momento</p>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-header">
+                        <span class="item-name">Smoothie de Frutas</span>
+                        <span class="item-price">$6.99</span>
+                    </div>
+                    <p class="item-description">Mezcla de frutas frescas de temporada con yogurt natural</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>✨ Gracias por elegirnos ✨</p>
+            <p>Todos nuestros platos son preparados con ingredientes frescos y amor</p>
+        </div>
+    </div>
+    
+    <script>
+        // Animación al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            menuItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+        
+        // Efecto hover mejorado
+        const menuItems = document.querySelectorAll('.menu-item');
+        
+        menuItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.borderLeftWidth = '8px';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.borderLeftWidth = '5px';
+            });
+        });
+    </script>
+</body>
+</html>
